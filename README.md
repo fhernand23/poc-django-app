@@ -6,7 +6,7 @@ Based on DjangoX (https://github.com/wsvincent/djangox)
 ## Features
 
 - Django 4.0 & Python 3.10
-- Install via [Pip](https://pypi.org/project/pip/), [Pipenv](https://pypi.org/project/pipenv/), or [Docker](https://www.docker.com/)
+- Install via [Pip](https://pypi.org/project/pip/) or [Docker](https://www.docker.com/)
 - User log in/out, sign up, password reset via [django-allauth](https://github.com/pennersr/django-allauth)
 - Static files configured with [Whitenoise](http://whitenoise.evans.io/en/stable/index.html)
 - Styling with [Bootstrap v4](https://github.com/twbs/bootstrap)
@@ -28,6 +28,7 @@ pip install -U -r requirements.txt
 ## Start project
 
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
@@ -35,3 +36,10 @@ python manage.py runserver
 ```
 
 ## Clean project
+
+- delete db.sqlite3
+- delete **/migrations/XXXX_something.py
+- run makemigrations
+- run migrate
+- run createsuperuser
+- run server
