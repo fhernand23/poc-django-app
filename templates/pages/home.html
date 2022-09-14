@@ -4,8 +4,18 @@
 {% block title %}Home page{% endblock title %}
 
 {% block content %}
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <img src="{% static 'images/logo.png' %}" class="img-fluid" alt="DjangoX logo"/>
-  <p class="lead">A Django starter project with batteries.</p>
+<div class="container-fluid p-0">
+
+  <h1 class="h3 mb-3">Home page</h1>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <img class="card-img-top" src="{% static 'images/logo2.png' %}" alt="App0 logo">
+        <div class="card-body">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content %}
