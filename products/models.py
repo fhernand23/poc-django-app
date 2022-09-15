@@ -45,6 +45,7 @@ class Provider(models.Model):
     avatar = models.ImageField(upload_to="files/providers", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    archived = models.BooleanField(default=False)
     class Meta:
         ordering = ['name']
     def __str__(self):
@@ -60,6 +61,7 @@ class Product(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.DO_NOTHING)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    archived = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['name']
