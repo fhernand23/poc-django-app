@@ -37,10 +37,24 @@
           <h5 class="h6 card-title">Last access</h5>
           <a href="#" class="badge bg-primary me-1 my-1">{{ user.last_login }}</a>
           {% if user.is_superuser %}
-          <br />
-          <br />
+          <hr />
           <h5 class="h6 card-title">Special Superadmin Actions</h5>
-          <button class="btn btn-warning">Generate some demo data</button>
+          <form method="post">
+            {% csrf_token %}
+            <button class="btn btn-warning" name="admin_action" value="demodata">Generate Demo Data</button>
+          </form>
+          {% endif %}
+          {% if msg_success %}
+          <hr />
+          <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+            <div class="alert-icon">
+              <i class="far fa-fw fa-bell"></i>
+            </div>
+            <div class="alert-message">
+              <strong>Success!</strong> {{ msg_success | safe }}
+            </div>
+          </div>
           {% endif %}
         </div>
       </div>

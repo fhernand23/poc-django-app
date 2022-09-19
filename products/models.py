@@ -10,8 +10,8 @@ class Notification(models.Model):
     """
     creation_date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(AppUser, on_delete=models.SET_NULL, null=True, blank=True)
-    content = models.TextField()
-    app_name = models.CharField(max_length=120, null=True, blank=True)
+    title = models.CharField(max_length=120, default="Notification title")
+    content = models.TextField(default="Notification content")
     object_type = models.CharField(max_length=120, null=True, blank=True)
     object_id = models.CharField(max_length=120, null=True, blank=True)
     object_name = models.CharField(max_length=120, null=True, blank=True)
@@ -31,10 +31,9 @@ class Notification(models.Model):
         blank=True,
         default='log',
         help_text='Notification type')
-    dest_user_id = models.CharField(max_length=120, null=True, blank=True)
-    tags = models.CharField(max_length=120, null=True, blank=True)
-    id_file = models.CharField(max_length=120, null=True, blank=True)
-    file_resource = models.JSONField(help_text='File resource related', blank=True, null=True)
+    from_user_id = models.CharField(max_length=120, null=True, blank=True)
+    attach = models.FileField(upload_to="files/notifications", null=True, blank=True)
+    read = models.BooleanField(default=False)
 
 
 class Provider(models.Model):

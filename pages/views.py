@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django import template
 from django.views.generic import TemplateView
 from products.models import Product, Provider
@@ -6,18 +7,30 @@ from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from pages.util import create_demo_data
 
 class BaseView(View):
      def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # TODO set user notifications
         return context
 
 
-class HomePageView(TemplateView):
-    template_name = "pages/home.html"
+def home(request):
+    msg = ""
+    if request.method == "POST":
+        data = request.POST
+        action = data.get("admin_action")
+        if action == "demodata":
+            # create sample data
+            msg = create_demo_data()
+            # msg = f"Requested action: {action}"
+        else:
+            msg = f"Unknown requested action: {action}"
+    return render(request, "pages/home.html", {"msg_success": msg})
 
 
-class AboutPageView(TemplateView):
+class AboutPageView(BaseView,TemplateView):
     template_name = "pages/about.html"
 
 
@@ -43,12 +56,9 @@ def devpages(request):
 
         html_template = loader.get_template('pages/' + load_template)
         return HttpResponse(html_template.render(context, request))
-
     except template.TemplateDoesNotExist:
-
         html_template = loader.get_template('pages/page-404.html')
         return HttpResponse(html_template.render(context, request))
-
     except:
         html_template = loader.get_template('pages/page-500.html')
         return HttpResponse(html_template.render(context, request))

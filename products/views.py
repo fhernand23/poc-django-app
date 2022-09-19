@@ -8,6 +8,7 @@ from .models import Notification, Provider, Product, ProductUnit
 class BaseView(View):
      def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # TODO set user notifications
         return context
 
 
@@ -33,7 +34,7 @@ class ProviderListView(LoginRequiredMixin, SuccessMessageMixin, BaseView, ListVi
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
-        context = super(ProviderList, self).get_context_data(**kwargs)
+        context = super(ProviderListView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
         context['some_data'] = 'This is just some data'
         return context
