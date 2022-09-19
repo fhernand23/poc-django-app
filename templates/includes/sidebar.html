@@ -1,0 +1,32 @@
+<nav id="sidebar" class="sidebar">
+	<div class="sidebar-content js-simplebar">
+		<a class="sidebar-brand" href="{% url 'home' %}">
+			<span class="align-middle">App0</span>
+		</a>
+
+		<ul class="sidebar-nav">
+			<li class="sidebar-header">
+				Menu
+			</li>
+
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="{% url 'pub-providers' %}">
+					<i class="align-middle" data-feather="user"></i> <span class="align-middle">Providers</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="{% url 'pub-products' %}">
+					<i class="align-middle" data-feather="package"></i> <span class="align-middle">Products</span>
+				</a>
+			</li>
+			{% if user.is_authenticated %}
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="{% url 'homedev' %}">
+					<i class="align-middle" data-feather="gitlab"></i> <span class="align-middle">UI Templates</span>
+				</a>
+			</li>
+			{% endif %}
+		</ul>
+
+	</div>
+</nav>

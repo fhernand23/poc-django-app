@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+	<meta name="description" content="An app for launching new Django projects quickly.">
+	<meta name="author" content="NKDLab">
+	<title>{% block title %}App0{% endblock title %}</title>
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+
+	{% block css %}
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+	<!-- Bootstrap CSS -->
+	<!-- <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}"> -->
+	<!-- Adminkit JavaScript -->
+	<link rel="stylesheet" href="{% static 'adminkit/css/app.css' %}">
+
+	<!-- <link rel="stylesheet" href="{% static 'css/base.css' %}"> -->
+	{% endblock %}
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="{% url 'home' %}">
+					<span class="align-middle">App0</span>
+				</a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{% url 'pub-providers' %}">
+							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Providers</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{% url 'pub-products' %}">
+							<i class="align-middle" data-feather="package"></i> <span class="align-middle">Products</span>
+						</a>
+					</li>
+					{% if user.is_authenticated %}
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{% url 'homedev' %}">
+							<i class="align-middle" data-feather="gitlab"></i> <span class="align-middle">UI Templates</span>
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+					<i class="hamburger align-self-center"></i>
+				</a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						{% if user.is_authenticated %}
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">4</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									4 New Notifications
+								</div>
+								<div class="list-group">
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-danger" data-feather="alert-circle"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Update completed</div>
+												<div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
+												<div class="text-muted small mt-1">30m ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-warning" data-feather="bell"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Lorem ipsum</div>
+												<div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+												<div class="text-muted small mt-1">2h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="home"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Login from 192.186.1.8</div>
+												<div class="text-muted small mt-1">5h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-success" data-feather="user-plus"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">New connection</div>
+												<div class="text-muted small mt-1">Christina accepted your request.</div>
+												<div class="text-muted small mt-1">14h ago</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a href="#" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+								<i class="align-middle" data-feather="settings"></i>
+							</a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+								<img src="{% static 'images/user_male.png' %}" class="avatar img-fluid rounded me-1" alt="Avatar" />
+								<span class="text-dark">{{ request.user.fullname }}</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">
+								<!-- <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div> -->
+								<a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="align-middle me-1"
+										data-feather="settings"></i> Change password</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'account_logout' %}"><i class="align-middle me-1"
+										data-feather="log-out"></i> Log out</a>
+							</div>
+						</li>
+						{% else %}
+						<li class="nav-item">
+							<form class="form-inline ml-auto">
+								<a href="{% url 'account_login' %}" class="btn btn-outline-secondary">Log in</a>
+								<a href="{% url 'account_signup' %}" class="btn btn-primary ml-2">Sign up</a>
+							</form>
+						</li>
+						{% endif %}
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				{% block content %}
+				<p>This content should be replaced by dynamic content...</p>
+				{% endblock content %}
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a class="text-muted" href="https://nkdlab.com.ar/" target="_blank"><strong>NKDLab</strong></a> &copy;
+								2022
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="{% url 'about' %}">About</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	{% block javascript %}
+
+	<!-- Bootstrap JavaScript -->
+	<!-- <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
+
+	<!-- Adminkit JavaScript -->
+	<script src="{% static 'adminkit/js/app.js' %}"></script>
+
+	<!-- 3rd party JavaScript -->
+
+	<!-- Project JS -->
+	<script src="{% static 'js/base.js' %}"></script>
+
+	{% endblock javascript %}
+
+</body>
+
+</html>

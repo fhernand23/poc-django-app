@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'layouts/base.html' %}
 {% load static %}
 
 {% block title %}Home page{% endblock title %}
@@ -9,13 +9,52 @@
   <h1 class="h3 mb-3">Home page</h1>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-4">
       <div class="card">
-        <img class="card-img-top" src="{% static 'images/logo_transparent.png' %}" alt="App0 logo" width="50%">
+        <img class="card-img-top" src="{% static 'images/logo_transparent.png' %}" alt="App0 logo">
         <div class="card-body">
         </div>
       </div>
     </div>
+
+    {% if user.is_authenticated %}
+    <div class="col-8">
+      <div class="card">
+        <div class="card-body">
+          <p>Welcome back {{ user.first_name}} {{ user.last_name}}!</p>
+          <h5 class="h6 card-title">Other information</h5>
+          <a href="#" class="badge bg-primary me-1 my-1">{{ user.email }}</a>
+          <h5 class="h6 card-title">Roles and Groups</h5>
+          {% if user.is_superuser %}
+          <a href="#" class="badge bg-primary me-1 my-1">Is Superuser</a>
+          {% endif %}
+          {% if user.is_staff %}
+          <a href="#" class="badge bg-primary me-1 my-1">Is Staff</a>
+          {% endif %}
+          {% for group in user.groups.all %}
+          <a href="#" class="badge bg-primary me-1 my-1">{{ group.name }}</a>
+          {% endfor %}
+          <h5 class="h6 card-title">Last access</h5>
+          <a href="#" class="badge bg-primary me-1 my-1">{{ user.last_login }}</a>
+          {% if user.is_superuser %}
+          <br />
+          <br />
+          <h5 class="h6 card-title">Special Superadmin Actions</h5>
+          <button class="btn btn-warning">Generate some demo data</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <p>You are viewing this app as an anonymous user
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
   </div>
 </div>
 {% endblock content %}

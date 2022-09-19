@@ -17,10 +17,10 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-	<!-- Adminkit JavaScript -->
-	<link rel="stylesheet" href="{% static 'adminkit/css/app.css' %}">
 	<!-- Bootstrap CSS -->
 	<!-- <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}"> -->
+	<!-- Adminkit JavaScript -->
+	<link rel="stylesheet" href="{% static 'adminkit/css/app.css' %}">
 
 	<!-- <link rel="stylesheet" href="{% static 'css/base.css' %}"> -->
 	{% endblock %}
@@ -47,8 +47,8 @@
 					</li>
 					{% if user.is_authenticated %}
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="">
-							<i class="align-middle" data-feather="package"></i> <span class="align-middle">Admin</span>
+						<a class="sidebar-link" href="{% url 'homedev' %}">
+							<i class="align-middle" data-feather="gitlab"></i> <span class="align-middle">UI Templates</span>
 						</a>
 					</li>
 					{% endif %}
@@ -138,7 +138,7 @@
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
 								<img src="{% static 'images/user_male.png' %}" class="avatar img-fluid rounded me-1" alt="Avatar" />
-								<span class="text-dark">{{ user.email }}</span>
+								<span class="text-dark">{{ request.user.fullname }}</span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
 								<!-- <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
@@ -164,24 +164,7 @@
 
 			<main class="content">
 				{% block content %}
-				<!-- <div class="container-fluid p-0">
-
-					<h1 class="h3 mb-3">Blank Page</h1>
-
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-header">
-									<h5 class="card-title mb-0">Empty card</h5>
-								</div>
-								<div class="card-body">
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div> -->
-				<p>Default content...</p>
+				<p>This content should be replaced by dynamic content...</p>
 				{% endblock content %}
 			</main>
 
@@ -209,11 +192,11 @@
 
 	{% block javascript %}
 
-	<!-- Adminkit JavaScript -->
-	<script src="{% static 'adminkit/js/app.js' %}"></script>
-
 	<!-- Bootstrap JavaScript -->
 	<!-- <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
+
+	<!-- Adminkit JavaScript -->
+	<script src="{% static 'adminkit/js/app.js' %}"></script>
 
 	<!-- 3rd party JavaScript -->
 
