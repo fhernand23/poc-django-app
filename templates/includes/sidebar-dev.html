@@ -10,31 +10,31 @@
 			</li>
 
 			<li class="sidebar-item {% if 'index' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="/">
+				<a class="sidebar-link" href="{% url 'homedev' %}">
 					<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
 				</a>
 			</li>
 
 			<li class="sidebar-item {% if 'profile' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="pages-profile.html">
+				<a class="sidebar-link" href="ui-pages-profile.html">
 					<i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
 				</a>
 			</li>
 
 			<li class="sidebar-item {% if 'settings' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="pages-settings.html">
+				<a class="sidebar-link" href="ui-pages-settings.html">
 					<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
 				</a>
 			</li>
 
 			<li class="sidebar-item {% if 'invoice' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="pages-invoice.html">
+				<a class="sidebar-link" href="ui-pages-invoice.html">
 					<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Invoice</span>
 				</a>
 			</li>
 
 			<li class="sidebar-item {% if 'blank' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="pages-blank.html">
+				<a class="sidebar-link" href="ui-pages-blank.html">
 					<i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
 				</a>
 			</li>
@@ -44,8 +44,8 @@
 					<i class="align-middle" data-feather="users"></i> <span class="align-middle">Auth</span>
 				</a>
 				<ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" href="pages-sign-in.html">Sign In</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" href="pages-sign-up.html">Sign Up</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" href="ui-pages-sign-in.html">Sign In</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" href="ui-pages-sign-up.html">Sign Up</a></li>
 				</ul>
 			</li>
 
@@ -68,7 +68,7 @@
 			</li>
 
 			<li class="sidebar-item {% if 'icons' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="icons-feather.html">
+				<a class="sidebar-link" href="ui-icons-feather.html">
 					<i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Icons</span>
 				</a>
 			</li>
@@ -78,13 +78,13 @@
 					<i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Forms</span>
 				</a>
 				<ul id="forms" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-					<li class="sidebar-item"><a class="sidebar-link" href="forms-layouts.html">Form Layouts</a></li>
-					<li class="sidebar-item"><a class="sidebar-link" href="forms-basic-inputs.html">Basic Inputs</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" href="ui-forms-layouts.html">Form Layouts</a></li>
+					<li class="sidebar-item"><a class="sidebar-link" href="ui-forms-basic-inputs.html">Basic Inputs</a></li>
 				</ul>
 			</li>
 
 			<li class="sidebar-item {% if 'tables' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="tables-bootstrap.html">
+				<a class="sidebar-link" href="ui-tables-bootstrap.html">
 					<i class="align-middle" data-feather="list"></i> <span class="align-middle">Tables</span>
 				</a>
 			</li>
@@ -94,13 +94,13 @@
 			</li>
 
 			<li class="sidebar-item {% if 'charts' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="charts-chartjs.html">
+				<a class="sidebar-link" href="ui-charts-chartjs.html">
 					<i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Charts</span>
 				</a>
 			</li>
 
 			<li class="sidebar-item {% if 'maps-google' in segment %} active {% endif %}">
-				<a class="sidebar-link" href="maps-google.html">
+				<a class="sidebar-link" href="ui-maps-google.html">
 					<i class="align-middle" data-feather="map"></i> <span class="align-middle">Maps</span>
 				</a>
 			</li>
