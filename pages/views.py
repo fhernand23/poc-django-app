@@ -7,12 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from pages.util import create_demo_data
+from pages.util import create_demo_data, user_notifications
 
 class BaseView(View):
      def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO set user notifications
+        # set user notifications
+        if self.request.user.is_authenticated:
+            context['user_notifications'] = user_notifications(self.request.user)
         return context
 
 
@@ -27,10 +29,14 @@ def home(request):
             # msg = f"Requested action: {action}"
         else:
             msg = f"Unknown requested action: {action}"
-    return render(request, "pages/home.html", {"msg_success": msg})
+    context = {
+        'msg_success': msg,
+        'user_notifications': user_notifications(request.user),
+    }
+    return render(request, "pages/home.html", context=context)
 
 
-class AboutPageView(BaseView,TemplateView):
+class AboutPageView(BaseView, TemplateView):
     template_name = "pages/about.html"
 
 

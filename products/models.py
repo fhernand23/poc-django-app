@@ -43,7 +43,7 @@ class Notification(models.Model):
         if self.status == 'error':
             return 'table-danger'
         elif self.status == 'event':
-            return 'table-secondary'
+            return 'table-warning'
         return 'table-info'
 
     @property
@@ -59,7 +59,7 @@ class Notification(models.Model):
         elif self.status == 'call':
             return 'phone'
         elif self.status == 'event':
-            return 'tag'
+            return 'bell'
         elif self.status == 'state-change':
             return 'repeat'
         return 'info'
@@ -69,7 +69,7 @@ class Notification(models.Model):
         if self.status == 'error':
             return 'text-danger'
         elif self.status == 'event':
-            return 'text-secondary'
+            return 'text-warning'
         return 'text-info'
 
 class Provider(models.Model):

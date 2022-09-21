@@ -4,11 +4,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from .models import Notification, Provider, Product, ProductUnit
 
+from pages.util import user_notifications
 
 class BaseView(View):
      def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO set user notifications
+        # set user notifications
+        if self.request.user.is_authenticated:
+            context['user_notifications'] = user_notifications(self.request.user)
         return context
 
 

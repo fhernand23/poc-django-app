@@ -1,8 +1,15 @@
 from asyncore import read
 import random
 import string
+from typing import List, Optional
 from products.models import Product, Provider, Notification
 from accounts.models import AppUser
+
+
+def user_notifications(user: Optional[AppUser]) -> List[Notification]:
+    if user and user.is_authenticated:
+        return Notification.objects.filter(user__exact=user, read__exact=False)[:10] # Get 10 notifications
+    return []
 
 
 def create_demo_data() -> str:
