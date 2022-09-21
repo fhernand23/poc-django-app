@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django import template
 from django.views.generic import TemplateView
-from products.models import Product, Provider
+from products.models import Product, Provider, Notification
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.contrib.auth.decorators import login_required
 from django.template import loader
@@ -64,7 +64,7 @@ def devpages(request):
         return HttpResponse(html_template.render(context, request))
 
 
-class PubProductListView(BaseView,ListView):
+class PubProductListView(BaseView, ListView):
     model = Product
     template_name = "pages/product_list.html"
     context_object_name = "products"
@@ -75,7 +75,17 @@ class PubProductDetailView(BaseView, DetailView):
     template_name = "pages/product_detail.html"  
 
 
-class PubProviderListView(BaseView,ListView):
+class PubProviderListView(BaseView, ListView):
     model = Provider
     template_name = "pages/provider_list.html"
     context_object_name = "providers"
+
+
+class NotificationsListView(BaseView, ListView):
+    model = Notification
+    template_name = "pages/notifications.html"
+    context_object_name = "notifications"
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        return Notification.objects.filter(user__exact=user)[:50] # Get 50 notifications

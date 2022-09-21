@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}User Notifications{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <h1 class="h3 mb-3">User Notifications</h1>
+
+    <div class="row">
+        <div class="col-12">
+            {% if notifications %}
+            <div class="card">
+                <table class="table">
+                    <tbody>
+                        {% for notification in notifications %}
+                        <tr class="{{ notification.table_class }}">
+                            <td>{{ notification.creation_date | date:'d/m/Y H:i:s' }}</td>
+                            <td><i class="{{ notification.ui_color }}" data-feather="{{ notification.ui_icon }}"></i>
+                            </td>
+                            <td>{{ notification.title }}</td>
+                            <td>{{ notification.content }}</td>
+                            <td class="table-action">
+                                {% if not notification.read %}
+                                <a href="#"><i class="align-middle" data-feather="edit-2"></i> Mark read </a>
+                                {% endif %}
+                                <a href="#"><i class="align-middle" data-feather="trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>There isn't products</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

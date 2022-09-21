@@ -35,6 +35,42 @@ class Notification(models.Model):
     attach = models.FileField(upload_to="files/notifications", null=True, blank=True)
     read = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['-creation_date']
+
+    @property
+    def table_class(self):
+        if self.status == 'error':
+            return 'table-danger'
+        elif self.status == 'event':
+            return 'table-secondary'
+        return 'table-info'
+
+    @property
+    def ui_icon(self):
+        if self.status == 'error':
+            return 'alert-triangle'
+        elif self.status == 'direct':
+            return 'message-square'
+        elif self.status == 'upload':
+            return 'paperclip'
+        elif self.status == 'mail':
+            return 'mail'
+        elif self.status == 'call':
+            return 'phone'
+        elif self.status == 'event':
+            return 'tag'
+        elif self.status == 'state-change':
+            return 'repeat'
+        return 'info'
+
+    @property
+    def ui_color(self):
+        if self.status == 'error':
+            return 'text-danger'
+        elif self.status == 'event':
+            return 'text-secondary'
+        return 'text-info'
 
 class Provider(models.Model):
     cuit = models.CharField(max_length=15, null=True, blank=True)
