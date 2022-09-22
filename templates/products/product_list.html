@@ -21,6 +21,7 @@
                     </button>
                 </div>
             </form>
+            <a href="{% url 'product-create' %}" class="btn btn-primary">Add new</a>
         </div>
     </div>
     <div class="row">
@@ -33,7 +34,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ product.short_description }}</p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Details</a>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-info">Details</a>
                 </div>
             </div>
         </div>

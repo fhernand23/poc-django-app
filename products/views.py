@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView, View
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
-# from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from .models import Provider, Product, ProductUnit
-
+from django.urls import reverse_lazy
 from pages.util import user_notifications
+
 
 class BaseView(View):
      def get_context_data(self, **kwargs):
@@ -30,6 +32,24 @@ class ProductDetailView(BaseView, DetailView):
     template_name = "products/product_detail.html"  
 
 
+class ProductCreate(PermissionRequiredMixin, CreateView):
+    model = Product
+    fields = ['name', 'short_description', 'description', 'price', 'image', 'provider', 'archived']
+    permission_required = 'product.can_add_product'
+
+
+class ProductUpdate(PermissionRequiredMixin, UpdateView):
+    model = Product
+    fields = ['name', 'short_description', 'description', 'price', 'image', 'provider', 'archived']
+    permission_required = 'product.can_change_product'
+
+
+class ProductDelete(PermissionRequiredMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('products')
+    permission_required = 'product.can_delete_product'
+
+
 class ProviderListView(BaseView, ListView):
     model = Provider
     paginate_by = 9
@@ -50,3 +70,21 @@ class ProviderListView(BaseView, ListView):
 class ProviderDetailView(BaseView, DetailView):
     model = Provider
     template_name = "products/provider_detail.html"  
+
+
+class ProviderCreate(PermissionRequiredMixin, CreateView):
+    model = Provider
+    fields = ['name', 'cuit', 'contact', 'documentation', 'avatar', 'archived']
+    permission_required = 'provider.can_add_provider'
+
+
+class ProviderUpdate(PermissionRequiredMixin, UpdateView):
+    model = Provider
+    fields = ['name', 'cuit', 'contact', 'documentation', 'avatar', 'archived']
+    permission_required = 'provider.can_change_provider'
+
+
+class ProviderDelete(PermissionRequiredMixin, DeleteView):
+    model = Provider
+    success_url = reverse_lazy('providers')
+    permission_required = 'provider.can_delete_provider'

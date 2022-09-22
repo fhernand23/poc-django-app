@@ -30,9 +30,12 @@
                             Price: <i class="align-middle" data-feather="dollar-sign"></i> {{ product.price }}
                         </li>
                         <li>
-                            Provider: <i class="align-middle" data-feather="user"></i> {{ product.provider.name }}
+                            Provider: <i class="align-middle" data-feather="user"></i> <a
+                                href="{{ product.provider.get_absolute_url }}">{{ product.provider.name }}</a>
                         </li>
                     </ul>
+                    <a href="{% url 'product-update' product.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'product-delete' product.id %}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
