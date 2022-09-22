@@ -2,13 +2,23 @@
 
 {% block content %}
 
-<h1>Delete Provider</h1>
+<div class="container-fluid p-0">
+  <h1 class="h3 mb-3">Delete Provider</h1>
 
-<p>Are you sure you want to delete the provider: {{ provider.name }}?</p>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <p>Are you sure you want to delete the provider: {{ provider.name }}?</p>
 
-<form action="" method="POST">
-  {% csrf_token %}
-  <input type="submit" action="" value="Yes, delete.">
-</form>
+          <form action="" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Yes, delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
