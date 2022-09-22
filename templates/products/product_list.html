@@ -33,7 +33,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ product.short_description }}</p>
-                    <a href="{% url 'product-detail' product.id %}" class="btn btn-primary">Details</a>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Details</a>
                 </div>
             </div>
         </div>

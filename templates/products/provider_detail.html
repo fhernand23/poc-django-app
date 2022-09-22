@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Provider{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">{{provider.name }}</h1>
+        <a class="badge bg-secondary text-white ms-2" href="{% url 'providers' %}">
+            Return to Providers
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                {% if provider.image %}
+                <img class="card-img-top" src="{{ provider.image.url }}" alt="Provider image">
+                {% endif %}
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{% firstof provider.contact "Not contact information" %}</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            CUIT: <i class="align-middle" data-feather="dollar-sign"></i> {{ provider.cuit }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

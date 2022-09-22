@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 
 AppUser = settings.AUTH_USER_MODEL
@@ -85,7 +86,9 @@ class Provider(models.Model):
         ordering = ['name']
     def __str__(self):
         return f"{self.name}"
-
+    def get_absolute_url(self):
+        """Returns the url to access a particular book instance."""
+        return reverse('provider-detail', args=[str(self.id)])
 
 class Product(models.Model):
     name = models.CharField(max_length=120)
@@ -104,6 +107,9 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def get_absolute_url(self):
+        """Returns the url to access a particular book instance."""
+        return reverse('product-detail', args=[str(self.id)])
 
 class ProductUnit(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -46,3 +46,7 @@ class ProviderListView(BaseView, ListView):
         context['some_data'] = 'This is just some data'
         return context
 
+
+class ProviderDetailView(BaseView, DetailView):
+    model = Provider
+    template_name = "products/provider_detail.html"  
