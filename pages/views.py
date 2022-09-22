@@ -70,25 +70,6 @@ def devpages(request):
         return HttpResponse(html_template.render(context, request))
 
 
-class PubProductListView(BaseView, ListView):
-    model = Product
-    paginate_by = 9
-    template_name = "pages/product_list.html"
-    context_object_name = "products"
-
-
-class PubProductDetailView(BaseView, DetailView):
-    model = Product
-    template_name = "pages/product_detail.html"  
-
-
-class PubProviderListView(BaseView, ListView):
-    model = Provider
-    paginate_by = 9
-    template_name = "pages/provider_list.html"
-    context_object_name = "providers"
-
-
 class NotificationsListView(BaseView, ListView):
     model = Notification
     paginate_by = 10

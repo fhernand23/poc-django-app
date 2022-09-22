@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
-from .models import Notification, Provider, Product, ProductUnit
+# from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
+from .models import Provider, Product, ProductUnit
 
 from pages.util import user_notifications
 
@@ -15,20 +15,24 @@ class BaseView(View):
         return context
 
 
-class ProductListView(LoginRequiredMixin, SuccessMessageMixin, BaseView, ListView):
-    queryset = Product.objects.all()
+class ProductListView(BaseView, ListView):
+    model = Product
+    paginate_by = 9
     template_name = "products/product_list.html"
     context_object_name = "products"
 
+    # def get_queryset(self, *args, **kwargs):
+    #     user = self.request.user
+    #     return Product.objects.filter(user__exact=user) # Get 50 notifications
 
-class ProductDetailView(LoginRequiredMixin, BaseView, DetailView):
-    model = Product 
-    template_name = "products/product_detail.html"
+class ProductDetailView(BaseView, DetailView):
+    model = Product
+    template_name = "products/product_detail.html"  
 
 
-class ProviderListView(LoginRequiredMixin, SuccessMessageMixin, BaseView, ListView):
-    queryset = Provider.objects.all()
-    # paginate_by:
+class ProviderListView(BaseView, ListView):
+    model = Provider
+    paginate_by = 9
     template_name = "products/provider_list.html"
     context_object_name = "providers"
 

@@ -7,8 +7,22 @@
 
 <div class="container-fluid p-0">
 
-    <h1 class="h3 mb-3">Products</h1>
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3>Products</h3>
+        </div>
 
+        <div class="col-auto ml-auto text-right mt-n1">
+            <form class="d-none d-sm-inline-block">
+                <div class="input-group input-group-navbar">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                    <button class="btn" type="button">
+                        <i class="align-middle" data-feather="search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="row">
         {% if products %}
         {% for product in products %}
@@ -19,11 +33,12 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ product.short_description }}</p>
-                    <a href="{% url 'pub-product-detail' product.id %}" class="btn btn-primary">Details</a>
+                    <a href="{% url 'product-detail' product.id %}" class="btn btn-primary">Details</a>
                 </div>
             </div>
         </div>
         {% endfor %}
+        {% include 'includes/pagination.html' %}
         {% else %}
         <p>There isn't products</p>
         {% endif %}
