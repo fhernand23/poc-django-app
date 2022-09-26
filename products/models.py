@@ -87,7 +87,7 @@ class Provider(models.Model):
     def __str__(self):
         return f"{self.name}"
     def get_absolute_url(self):
-        """Returns the url to access a particular book instance."""
+        """Returns the url to access a particular instance."""
         return reverse('provider-detail', args=[str(self.id)])
 
 class Product(models.Model):
@@ -108,8 +108,21 @@ class Product(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        """Returns the url to access a particular book instance."""
+        """Returns the url to access a particular instance."""
         return reverse('product-detail', args=[str(self.id)])
+
+class WhLocation(models.Model):
+    name = models.CharField(max_length=120)
+    description = models.TextField(null=True, blank=True)
+    archived = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance."""
+        return reverse('whlocation-detail', args=[str(self.id)])
+
 
 class ProductUnit(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -127,7 +140,7 @@ class ProductUnit(models.Model):
         default='fix',
         help_text='Action type')
     quantity = models.IntegerField()
-    location = models.CharField(max_length=120, null=True, blank=True)
+    wh_location = models.ForeignKey(WhLocation, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(AppUser, on_delete=models.SET_NULL, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)

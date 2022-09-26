@@ -7,3 +7,8 @@ psycopg2-binary==2.9.3
 crispy-bootstrap5
 django-ckeditor==6.4.2
 Pillow
+gunicorn
+django-dotenv
+requests
+django-storages
+boto3

@@ -1,0 +1,64 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Locations{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3>Locations</h3>
+        </div>
+
+        <div class="col-auto ml-auto text-right mt-n1">
+            <form class="d-none d-sm-inline-block">
+                <div class="input-group input-group-navbar">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                    <button class="btn" type="button">
+                        <i class="align-middle" data-feather="search"></i>
+                    </button>
+                </div>
+            </form>
+            <a href="{% url 'whlocation-create' %}" class="btn btn-primary">Add new</a>
+        </div>
+    </div>
+    <div class="row">
+        {% if wh_locations %}
+        <div class="col-6">
+            <div class="card">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:40%;">Name</th>
+                            <th style="width:40%;">Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for wh_location in wh_locations %}
+                        <tr>
+                            <td>{{ wh_location.name }}</td>
+                            <td>{{ wh_location.description }}</td>
+                            <td>
+                                <a href="{{ wh_location.get_absolute_url }}" class="btn btn-outline-info">
+                                    <i class="align-middle" data-feather="clipboard"></i> Details</a>
+                                <a href="{% url 'whlocation-update' wh_location.id %}" class="btn btn-outline-primary">
+                                    <i class="align-middle" data-feather="edit-2"></i> Edit</a>
+                                <a href="{% url 'whlocation-delete' wh_location.id %}" class="btn btn-outline-danger">
+                                    <i class="align-middle" data-feather="trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% include 'includes/pagination.html' %}
+        {% else %}
+        <p>There isn't locations</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

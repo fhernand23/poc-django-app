@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
-from .models import Provider, Product, ProductUnit
+from .models import Provider, Product, ProductUnit, WhLocation
 from django.urls import reverse_lazy
 from pages.util import user_notifications
 
@@ -88,3 +88,33 @@ class ProviderDelete(PermissionRequiredMixin, DeleteView):
     model = Provider
     success_url = reverse_lazy('providers')
     permission_required = 'provider.can_delete_provider'
+
+
+class WhLocationListView(BaseView, ListView):
+    model = WhLocation
+    paginate_by = 10
+    template_name = "products/whlocation_list.html"
+    context_object_name = "wh_locations"
+
+
+class WhLocationDetailView(BaseView, DetailView):
+    model = WhLocation
+    template_name = "products/whlocation_detail.html"
+
+
+class WhLocationCreate(PermissionRequiredMixin, CreateView):
+    model = WhLocation
+    fields = ['name', 'description', 'archived']
+    permission_required = 'wh_location.can_add_wh_location'
+
+
+class WhLocationUpdate(PermissionRequiredMixin, UpdateView):
+    model = WhLocation
+    fields = ['name', 'description', 'archived']
+    permission_required = 'wh_location.can_change_wh_location'
+
+
+class WhLocationDelete(PermissionRequiredMixin, DeleteView):
+    model = WhLocation
+    success_url = reverse_lazy('providers')
+    permission_required = 'wh_location.can_delete_wh_location'

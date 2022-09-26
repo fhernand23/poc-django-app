@@ -19,7 +19,15 @@
 					<i class="align-middle" data-feather="package"></i> <span class="align-middle">Products</span>
 				</a>
 			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="{% url 'whlocations' %}">
+					<i class="align-middle" data-feather="map-pin"></i> <span class="align-middle">Locations</span>
+				</a>
+			</li>
 			{% if user.is_authenticated %}
+			<li class="sidebar-header">
+				Dev
+			</li>
 			<li class="sidebar-item">
 				<a class="sidebar-link" href="{% url 'homedev' %}">
 					<i class="align-middle" data-feather="gitlab"></i> <span class="align-middle">UI Templates</span>

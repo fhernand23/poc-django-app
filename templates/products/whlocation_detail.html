@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Location{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">{{whlocation.name }}</h1>
+        <a class="badge bg-secondary text-white ms-2" href="{% url 'whlocations' %}">
+            Return to Locations
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ whlocation.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ whlocation.description }}</p>
+                    <a href="{% url 'whlocation-update' whlocation.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'whlocation-delete' whlocation.id %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

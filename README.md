@@ -16,12 +16,8 @@ Based on DjangoX (https://github.com/wsvincent/djangox)
 ## Dev environment
 
 ```bash
-conda create -n poc-django-app python=3.10
-conda activate poc-django-app
-```
-
-Install dependencies & modules
-```bash
+python3.9 -m venv venv
+. ./venv/bin/activate
 pip install -U -r requirements.txt
 ```
 
