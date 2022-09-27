@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "debug_toolbar",
-    'ckeditor',
+    "ckeditor",
+    "django_filters",
     # Local
     "accounts",
     "pages",

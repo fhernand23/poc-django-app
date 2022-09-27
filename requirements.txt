@@ -12,3 +12,4 @@ django-dotenv
 requests
 django-storages
 boto3
+django-filter

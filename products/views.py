@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, 
 from .models import Provider, Product, ProductUnit, WhLocation
 from django.urls import reverse_lazy
 from pages.util import user_notifications
+import django_filters
 
 
 class BaseView(View):
@@ -17,11 +18,42 @@ class BaseView(View):
         return context
 
 
-class ProductListView(BaseView, ListView):
+class FilteredListView(ListView):
+    filterset_class = None
+
+    def get_queryset(self):
+        # Get the queryset however you usually would.  For example:
+        queryset = super().get_queryset()
+        # Then use the query parameters and the queryset to
+        # instantiate a filterset and save it as an attribute
+        # on the view instance for later.
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        # Return the filtered queryset
+        return self.filterset.qs.distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass the filterset to the template - it provides the form.
+        context['filterset'] = self.filterset
+        return context
+        
+        
+class ProductFilterset(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+    price__gt = django_filters.NumberFilter(field_name='price', lookup_expr='gt')
+    price__lt = django_filters.NumberFilter(field_name='price', lookup_expr='lt')
+
+    class Meta:
+        model = Product
+        fields = ['price', 'date_created']
+
+
+class ProductListView(BaseView, FilteredListView):
     model = Product
     paginate_by = 9
     template_name = "products/product_list.html"
     context_object_name = "products"
+    filterset_class = ProductFilterset
 
     # def get_queryset(self, *args, **kwargs):
     #     user = self.request.user
@@ -50,11 +82,20 @@ class ProductDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'product.can_delete_product'
 
 
-class ProviderListView(BaseView, ListView):
+class ProviderFilterset(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Provider
+        fields = ['name', 'cuit', 'date_created']
+
+
+class ProviderListView(BaseView, FilteredListView):
     model = Provider
     paginate_by = 9
     template_name = "products/provider_list.html"
     context_object_name = "providers"
+    filterset_class = ProviderFilterset
 
     # def get_queryset(self):
     #     return Book.objects.filter(title__icontains='war')[:5] # Get 5 books containing the title war
@@ -90,11 +131,20 @@ class ProviderDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'provider.can_delete_provider'
 
 
-class WhLocationListView(BaseView, ListView):
+class WhLocationFilterset(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = WhLocation
+        fields = ['name']
+
+
+class WhLocationListView(BaseView, FilteredListView):
     model = WhLocation
     paginate_by = 10
     template_name = "products/whlocation_list.html"
-    context_object_name = "wh_locations"
+    context_object_name = "whlocations"
+    filterset_class = WhLocationFilterset
 
 
 class WhLocationDetailView(BaseView, DetailView):

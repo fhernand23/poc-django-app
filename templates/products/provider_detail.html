@@ -29,8 +29,10 @@
                             CUIT: <i class="align-middle" data-feather="dollar-sign"></i> {{ provider.cuit }}
                         </li>
                     </ul>
-                    <a href="{% url 'provider-update' provider.id %}" class="btn btn-primary">Edit</a>
-                    <a href="{% url 'provider-delete' provider.id %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'provider-update' provider.id %}" class="btn btn-primary"><i
+                            class="bi bi-pencil"></i> Edit</a>
+                    <a href="{% url 'provider-delete' provider.id %}" class="btn btn-danger"><i class="bi bi-trash"></i>
+                        Delete</a>
                 </div>
             </div>
         </div>
