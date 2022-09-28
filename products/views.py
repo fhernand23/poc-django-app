@@ -1,12 +1,23 @@
-from django.shortcuts import render
+import datetime
+from math import prod
+import django_filters
+import qrcode
+from io import BytesIO
+from PIL import Image, ImageDraw
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.core.files import File
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
-from .models import Provider, Product, ProductUnit, WhLocation
-from django.urls import reverse_lazy
+
+from products.models import Provider, Product, ProductUnit, WhLocation
+from products.forms import AddProductUnitForm
 from pages.util import user_notifications
-import django_filters
 
 
 class BaseView(View):
@@ -38,6 +49,7 @@ class FilteredListView(ListView):
         return context
         
         
+# product section
 class ProductFilterset(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
     price__gt = django_filters.NumberFilter(field_name='price', lookup_expr='gt')
@@ -82,6 +94,72 @@ class ProductDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'product.can_delete_product'
 
 
+@login_required
+def product_add_qr(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    full_url = request.build_absolute_uri(product.get_absolute_url())
+    qr_image = qrcode.make(full_url)
+    qr_offset = Image.new('RGB', (340, 340), "white")
+    qr_offset.paste(qr_image)
+    files_name = f'Product{product.id}qr.png'
+    stream = BytesIO()
+    qr_offset.save(stream, 'PNG')
+    product.qrcode.save(files_name, File(stream), save=False)
+    qr_offset.close()
+    product.save()
+
+    # redirect to a new URL:
+    return HttpResponseRedirect(product.get_absolute_url())
+
+
+@login_required
+def product_add_stock(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = AddProductUnitForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            product_unit = ProductUnit(
+                product = product,
+                action = 'buy',
+                quantity = form.cleaned_data['quantity'],
+                user = request.user,
+                move_date = form.cleaned_data['move_date'],
+                move_description = form.cleaned_data['description'],
+                lot = form.cleaned_data['lot'],
+            )
+            product_unit.save()
+            if form.cleaned_data['add_qr']:
+                qr_image = qrcode.make(product_unit.get_absolute_url())
+                qr_offset = Image.new('RGB', (310, 310), "white")
+                qr_offset.paste(qr_image)
+                files_name = f'Product{product.id}qr.png'
+                stream = BytesIO()
+                qr_offset.save(stream, 'PNG')
+                product_unit.qrcode.save(files_name, File(stream), save=False)
+                qr_offset.close()
+                product_unit.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect(product.get_absolute_url())
+
+    default_date = datetime.date.today()
+    form = AddProductUnitForm(initial={'move_date': default_date, 'quantity': 0, 'add_qr': False, 'description': '', 'lot': ''})
+
+    context = {
+        'form': form,
+        'product': product,
+    }
+
+    return render(request, 'products/product_add_stock.html', context)
+
+
+# providers section
 class ProviderFilterset(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
 
@@ -131,6 +209,7 @@ class ProviderDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'provider.can_delete_provider'
 
 
+# wh location sectors
 class WhLocationFilterset(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
 

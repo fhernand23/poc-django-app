@@ -7,40 +7,116 @@
 
 <div class="container-fluid p-0">
 
-    <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">{{product.name }}</h1>
-        <a class="badge bg-secondary text-white ms-2" href="{% url 'products' %}">
-            Return to Products
-        </a>
-    </div>
+  <div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{product.name }}</h1>
+    <a class="badge bg-secondary text-white ms-2" href="{% url 'products' %}">
+      Return to Products
+    </a>
+  </div>
 
-    <div class="row">
-        <div class="col-6">
-            <div class="card">
-                {% if product.image %}
-                <img class="card-img-top" src="{{ product.image.url }}" alt="Product image">
-                {% endif %}
-                <div class="card-header">
-                    <h5 class="card-title mb-0">{{ product.short_description }}</h5>
-                </div>
-                <div class="card-body">
-                    <p>{{ product.description }}</p>
-                    <ul>
-                        <li>
-                            Price: <i class="align-middle" data-feather="dollar-sign"></i> {{ product.price }}
-                        </li>
-                        <li>
-                            Provider: <i class="align-middle" data-feather="user"></i> <a
-                                href="{{ product.provider.get_absolute_url }}">{{ product.provider.name }}</a>
-                        </li>
-                    </ul>
-                    <a href="{% url 'product-update' product.id %}" class="btn btn-primary"><i class="bi bi-pencil"></i>
-                        Edit</a>
-                    <a href="{% url 'product-delete' product.id %}" class="btn btn-danger"><i class="bi bi-trash"></i>
-                        Delete</a>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        {% if product.image %}
+        <img class="card-img-top" src="{{ product.image.url }}" alt="Product image">
+        {% endif %}
+        <div class="card-header">
+          <h5 class="card-title mb-0">{{ product.short_description }}</h5>
         </div>
+        <div class="card-body">
+          <p>{{ product.description }}</p>
+          <ul>
+            <li>
+              Price: <i class="align-middle" data-feather="dollar-sign"></i> {{ product.price }}
+            </li>
+            <li>
+              Provider: <i class="align-middle" data-feather="user"></i> <a
+                href="{{ product.provider.get_absolute_url }}">{{ product.provider.name }}</a>
+            </li>
+          </ul>
+          <a href="{% url 'product-update' product.id %}" class="btn btn-primary"><i class="bi bi-pencil"></i>
+            Edit</a>
+          <a href="{% url 'product-delete' product.id %}" class="btn btn-danger"><i class="bi bi-trash"></i>
+            Delete</a>
+        </div>
+      </div>
     </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs pull-right" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#tab-1">Stock</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tab-2">QR / RFID</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+              {% if product.productunit_set.all.count == 0 %}
+              <div class="alert alert-danger" role="alert">
+                <div class="alert-message">
+                  There is no stock of the product
+                </div>
+              </div>
+              {% else %}
+
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Lot</th>
+                    <th>Location</th>
+                    <th>User</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for produnit in product.productunit_set.all %}
+                  <tr>
+                    <td>{{produnit.quantity}}</td>
+                    <td>{{produnit.move_date|date:'d/m/Y'}}</td>
+                    <td>{{produnit.Lot}}</td>
+                    <td>{{produnit.wh_location}}</td>
+                    <td>{{produnit.user}}</td>
+                    <td nowrap>
+                      <a href="#" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% endif %}
+              <a href="{% url 'product-add-stock' product.id %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i>
+                Add Stock</a>
+            </div>
+            <div class="tab-pane fade" id="tab-2" role="tabpanel">
+              {% if not product.qrcode %}
+              <div class="alert alert-info" role="alert">
+                <div class="alert-message">
+                  The product doesn't have a QR code
+                </div>
+              </div>
+              <a href="{% url 'product-add-qr' product.id %}" class="btn btn-primary"><i class="bi bi-qr-code"></i>
+                Generate QR Code</a>
+              {% else %}
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><img src="{{ product.qrcode.url }}" alt="Product QR"></li>
+                <li class="list-group-item"><a href="{% url 'product-add-qr' product.id %}" class="btn btn-primary"><i
+                      class="bi bi-qr-code"></i>
+                    Replace QR Code</a></li>
+              </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -17,7 +17,7 @@
                     <tbody>
                         {% for notification in notifications %}
                         <tr class="{{ notification.table_class }}">
-                            <td>{{ notification.creation_date | date:'d/m/Y H:i:s' }}</td>
+                            <td>{{ notification.creation_date|date:'d/m/Y H:i:s' }}</td>
                             <td><i class="{{ notification.ui_color }}" data-feather="{{ notification.ui_icon }}"></i>
                             </td>
                             <td>{{ notification.title }}</td>

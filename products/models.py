@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+import uuid
 
 
 AppUser = settings.AUTH_USER_MODEL
@@ -73,6 +74,7 @@ class Notification(models.Model):
             return 'text-warning'
         return 'text-info'
 
+
 class Provider(models.Model):
     cuit = models.CharField(max_length=15, null=True, blank=True)
     name = models.CharField(max_length=120)
@@ -82,10 +84,13 @@ class Provider(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     archived = models.BooleanField(default=False)
+
     class Meta:
         ordering = ['name']
+
     def __str__(self):
         return f"{self.name}"
+
     def get_absolute_url(self):
         """Returns the url to access a particular instance."""
         return reverse('provider-detail', args=[str(self.id)])
@@ -96,6 +101,8 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
     image = models.ImageField(upload_to="files/products", null=True, blank=True)
+    code = models.CharField(max_length=240, null=True, blank=True)
+    qrcode = models.ImageField(upload_to="files/codes", null=True, blank=True)
     provider = models.ForeignKey(Provider, on_delete=models.DO_NOTHING)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -110,6 +117,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a particular instance."""
         return reverse('product-detail', args=[str(self.id)])
+
 
 class WhLocation(models.Model):
     name = models.CharField(max_length=120)
@@ -126,7 +134,8 @@ class WhLocation(models.Model):
 
 class ProductUnit(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    code = models.CharField(max_length=120)
+    code = models.CharField(max_length=240, null=True, blank=True)
+    qrcode = models.ImageField(upload_to="files/codes", null=True, blank=True)
     ACTION_TYPES = (
         ('buy', 'Increase by buy'),
         ('sell', 'Decrease by sell'),
@@ -142,8 +151,16 @@ class ProductUnit(models.Model):
     quantity = models.IntegerField()
     wh_location = models.ForeignKey(WhLocation, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(AppUser, on_delete=models.SET_NULL, null=True, blank=True)
+    uid = models.UUIDField(default=uuid.uuid4)
+    move_date = models.DateTimeField(null=True, blank=True)
+    move_description = models.TextField(null=True, blank=True)
+    lot = models.CharField(max_length=120, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance."""
+        return reverse('productunit-detail', args=[str(self.id)])
 
     class Meta:
         ordering = ['-date_created']

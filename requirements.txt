@@ -13,3 +13,4 @@ requests
 django-storages
 boto3
 django-filter
+qrcode[pil]
