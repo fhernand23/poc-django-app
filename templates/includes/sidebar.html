@@ -26,7 +26,20 @@
 			</li>
 			{% if user.is_authenticated %}
 			<li class="sidebar-header">
-				Dev
+				API
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="api">
+					<i class="align-middle" data-feather="code"></i> <span class="align-middle">Home</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="api/products">
+					<i class="align-middle" data-feather="code"></i> <span class="align-middle">Products</span>
+				</a>
+			</li>
+			<li class="sidebar-header">
+				UI
 			</li>
 			<li class="sidebar-item">
 				<a class="sidebar-link" href="{% url 'homedev' %}">

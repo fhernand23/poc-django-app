@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "rest_framework",
     # Third-party
     "allauth",
     "allauth.account",
@@ -34,6 +35,8 @@ INSTALLED_APPS = [
     "accounts",
     "pages",
     "products",
+    "api",
+    "apiproducts",
 ]
 
 # MIDDLEWARE

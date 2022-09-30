@@ -1,3 +1,4 @@
+from rest_framework import routers
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
@@ -6,7 +7,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("products/", include('products.urls')),
+    path("products/", include("products.urls")),
+    path("api/", include("api.urls")),
+    path("api/products/", include("apiproducts.urls")),
     path("", include("pages.urls")),
 ]
 
