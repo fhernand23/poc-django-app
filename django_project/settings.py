@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "rest_framework",
     # Third-party
     "allauth",
     "allauth.account",
@@ -31,6 +30,9 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "ckeditor",
     "django_filters",
+    # api
+    "rest_framework",
+    "rest_framework.authtoken",
     # Local
     "accounts",
     "pages",

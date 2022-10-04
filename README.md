@@ -31,6 +31,8 @@ python manage.py runserver
 # Load the site at http://localhost:8000
 ```
 
+dev admin: super1 / 123
+
 ## Clean project
 
 - delete db.sqlite3

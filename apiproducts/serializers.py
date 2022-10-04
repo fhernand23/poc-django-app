@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from products.models import Product
+from products.models import Product, Provider, WhLocation
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -8,6 +8,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
+            'pk'
             'name',
             'short_description',
             'price',
@@ -21,3 +22,24 @@ class ProductSerializer(serializers.ModelSerializer):
         if not isinstance(obj, Product):
             return None
         return obj.get_discount()
+
+
+class ProviderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Provider
+        fields = [
+            'pk',
+            'cuit',
+            'name',
+            'contact',
+        ]
+
+
+class WhLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WhLocation
+        fields = [
+            'pk',
+            'name',
+            'description',
+        ]

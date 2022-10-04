@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django import template
 from django.views.generic import TemplateView
-from products.models import Product, Provider, Notification
+from .models import Notification
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from pages.util import create_demo_data, user_notifications
+from pages.util import user_notifications
+from products.util import create_demo_data
 
 class BaseView(View):
      def get_context_data(self, **kwargs):
