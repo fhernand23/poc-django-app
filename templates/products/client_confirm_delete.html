@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+  <h1 class="h3 mb-3">Delete Client</h1>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <p>Are you sure you want to delete the client: {{ client.name }}?</p>
+
+          <form action="" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Yes, delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

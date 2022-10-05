@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from products.models import Provider, Product, ProductUnit, WhLocation
+from products.models import Provider, Product, ProductUnit, WhLocation, Client
 from products.forms import AddProductUnitForm
 from pages.util import user_notifications
 
@@ -247,3 +247,42 @@ class WhLocationDelete(PermissionRequiredMixin, DeleteView):
     model = WhLocation
     success_url = reverse_lazy('providers')
     permission_required = 'wh_location.can_delete_wh_location'
+
+
+# clients
+class ClientFilterset(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Client
+        fields = ['name', 'cuit', 'date_created']
+
+
+class ClientListView(BaseView, FilteredListView):
+    model = Client
+    paginate_by = 9
+    template_name = "products/client_list.html"
+    context_object_name = "clients"
+    filterset_class = ClientFilterset
+
+class ClientDetailView(BaseView, DetailView):
+    model = Client
+    template_name = "products/client_detail.html"  
+
+
+class ClientCreate(PermissionRequiredMixin, CreateView):
+    model = Client
+    fields = ['name', 'cuit', 'contact', 'documentation', 'archived']
+    permission_required = 'client.can_add_client'
+
+
+class ClientUpdate(PermissionRequiredMixin, UpdateView):
+    model = Client
+    fields = ['name', 'cuit', 'contact', 'documentation', 'archived']
+    permission_required = 'client.can_change_client'
+
+
+class ClientDelete(PermissionRequiredMixin, DeleteView):
+    model = Provider
+    success_url = reverse_lazy('clients')
+    permission_required = 'client.can_delete_client'

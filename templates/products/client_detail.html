@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Client{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">{{client.name }}</h1>
+        <a class="badge bg-secondary text-white ms-2" href="{% url 'clients' %}">
+            Return to Clients
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                {% if client.image %}
+                <img class="card-img-top" src="{{ client.image.url }}" alt="Client image">
+                {% endif %}
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{% firstof client.contact "Not contact information" %}</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            CUIT: <i class="align-middle" data-feather="dollar-sign"></i> {{ client.cuit }}
+                        </li>
+                    </ul>
+                    <a href="{% url 'client-update' client.id %}" class="btn btn-primary"><i class="bi bi-pencil"></i>
+                        Edit</a>
+                    <a href="{% url 'client-delete' client.id %}" class="btn btn-danger"><i class="bi bi-trash"></i>
+                        Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

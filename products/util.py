@@ -49,15 +49,14 @@ def create_demo_data() -> str:
     move_type9.save()
 
     # create 20 providers with 10 products
-    for i in range(1, 20):
+    for i in range(1, 21):
         provider = Provider(
             cuit = rstri(13),
             name = f"TheProvider{i}-{rstri(3)}",
             contact = f"Phone: {rstri(3)}-{rstri(8)}"
         )
         provider.save()
-        products = []
-        for j in range(1, 10):
+        for j in range(1, 11):
             product = Product(
                 name = f"SomeProduct{j}-{rstri(3)}",
                 short_description = f"This is a product usefulf for some situations: {rstri(3)}, {rstri(4)} and {rstri(2)}",
@@ -65,11 +64,9 @@ def create_demo_data() -> str:
                 price = random.uniform(10.00, 110.00)
             )
             product.save()
-            products.append(product)
-        provider.products = products
-        provider.save()
+            provider.products.add(product)
     # create 20 clients
-    for i in range(1, 20):
+    for i in range(1, 21):
         client = Client(
             cuit = rstri(13),
             name = f"TheClient{i}-{rstri(3)}",
@@ -77,7 +74,7 @@ def create_demo_data() -> str:
         )
         client.save()
     # create 3 locations
-    for i in range(1, 3):
+    for i in range(1, 4):
         location = WhLocation(
             name = f"Location{i}-{rstri(3)}",
             description = f"This is a sample location at gps: {rstri(3)}-{rstri(8)}"

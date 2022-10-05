@@ -21,13 +21,19 @@
                 <img class="card-img-top" src="{{ provider.image.url }}" alt="Provider image">
                 {% endif %}
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{% firstof provider.contact "Not contact information" %}</h5>
+                    <h5 class="card-title mb-0">Provider details</h5>
                 </div>
                 <div class="card-body">
+                    <p><b>Contact: </b> {% firstof provider.contact "Not contact information" %}</p>
+                    <p><b>CUIT: </b> {{ provider.cuit }}</p>
+                    <p><b>Products: </b></p>
                     <ul>
+                        {% for product in provider.products.all %}
                         <li>
-                            CUIT: <i class="align-middle" data-feather="dollar-sign"></i> {{ provider.cuit }}
+                            <i class="align-middle" data-feather="box"></i> <a
+                                href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                         </li>
+                        {% endfor %}
                     </ul>
                     <a href="{% url 'provider-update' provider.id %}" class="btn btn-primary"><i
                             class="bi bi-pencil"></i> Edit</a>
