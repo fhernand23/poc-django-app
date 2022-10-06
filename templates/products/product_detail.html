@@ -15,7 +15,7 @@
   </div>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <div class="card">
         {% if product.image %}
         <img class="card-img-top" src="{{ product.image.url }}" alt="Product image">
@@ -41,8 +41,75 @@
             Delete</a>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4>Stock</h4>
+          {% if product.productunit_set.all.count == 0 %}
+          <div class="alert alert-danger" role="alert">
+            <div class="alert-message">
+              There is no stock of the product
+            </div>
+          </div>
+          {% else %}
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Quantity</th>
+                <th>Date</th>
+                <th>Lot</th>
+                <th>Location</th>
+                <th>User</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for produnit in product.productunit_set.all %}
+              <tr>
+                <td>{{produnit.quantity}}</td>
+                <td>{{produnit.move_date|date:'d/m/Y'}}</td>
+                <td>{{produnit.Lot}}</td>
+                <td>{{produnit.wh_location}}</td>
+                <td>{{produnit.user}}</td>
+                <td nowrap>
+                  <a href="#" class="btn btn-outline-primary">
+                    <i class="bi bi-pencil"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          <a href="{% url 'product-add-stock' product.id %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i>
+            Add Stock</a>
+        </div>
+      </div>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h4>QR / RFID</h4>
+          {% if not logisticunitcode.qr_code %}
+          <div class="alert alert-info" role="alert">
+            <div class="alert-message">
+              The product doesn't have a QR code
+            </div>
+          </div>
+          <a href="{% url 'product-add-qr' product.id %}" class="btn btn-primary"><i class="bi bi-qr-code"></i>
+            Generate QR Code</a>
+          {% else %}
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><img class="img-thumbnail" src="{{ logisticunitcode.qr_code.url }}"
+                alt="Product QR" width="200" height="200"></li>
+            <li class="list-group-item"><a href="{% url 'product-add-qr' product.id %}" class="btn btn-primary"><i
+                  class="bi bi-qr-code"></i>
+                Replace QR Code</a></li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs pull-right" role="tablist">
@@ -97,7 +164,7 @@
                 Add Stock</a>
             </div>
             <div class="tab-pane fade" id="tab-2" role="tabpanel">
-              {% if not product.qrcode %}
+              {% if not logisticunitcode.qr_code %}
               <div class="alert alert-info" role="alert">
                 <div class="alert-message">
                   The product doesn't have a QR code
@@ -107,7 +174,7 @@
                 Generate QR Code</a>
               {% else %}
               <ul class="list-group list-group-flush">
-                <li class="list-group-item"><img src="{{ product.qrcode.url }}" alt="Product QR"></li>
+                <li class="list-group-item"><img src="{{ logisticunitcode.qr_code.url }}" alt="Product QR"></li>
                 <li class="list-group-item"><a href="{% url 'product-add-qr' product.id %}" class="btn btn-primary"><i
                       class="bi bi-qr-code"></i>
                     Replace QR Code</a></li>

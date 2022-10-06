@@ -8,16 +8,24 @@ from pages.util import rstri
 PACKAGE_UNIT = "Unit"
 PACKAGE_BOX = "Box"
 PACKAGE_PALLET = "Pallet"
+PACKAGE_OTHER = "Other"
 
 MOVE_ADD = "Increase by Buy"
+MOVE_ADD_RFID = "Increase by Buy with RFID tag"
 MOVE_MINUS = "Decrease by Sell"
+MOVE_MINUS_USE = "Decrease by Sell to internal usage"
 MOVE_CHANGE = "Change"
 MOVE_CHANGE_ERROR = "Change by Error"
-MOVE_LECTURE = "Lecture"
 MOVE_QUALITY = "Quality Check"
 MOVE_VALUATION = "Change Valuation"
-MOVE_FIND = "Find"
-MOVE_VALUATION = "Change Grouping"
+MOVE_GROUPING = "Change Grouping"
+MOVE_LOCATION = "Change Location"
+MOVE_FIND_ONE = "RFID Find One"
+MOVE_FIND_ALL = "RFID Find All"
+MOVE_LECTURE = "RFID Lecture"
+
+LOG_UNIT_TYPE_PRODUCT = "Product"
+LOG_UNIT_TYPE_PRODUCT_UNIT = "ProductUnit"
 
 def create_demo_data() -> str:
     # create package types
@@ -127,3 +135,7 @@ def create_demo_data() -> str:
         )
         not6.save()
     return "Create Demo Data created OK"
+
+
+def generate_rfid_code() -> str:
+    return "123456789"

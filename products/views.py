@@ -2,6 +2,7 @@ import datetime
 from math import prod
 import django_filters
 import qrcode
+import uuid
 from io import BytesIO
 from PIL import Image, ImageDraw
 
@@ -15,8 +16,9 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from products.models import Provider, Product, ProductUnit, WhLocation, Client
+from products.models import Provider, Product, ProductUnit, WhLocation, Client, LogisticUnitCode
 from products.forms import AddProductUnitForm
+from products.util import LOG_UNIT_TYPE_PRODUCT, generate_rfid_code
 from pages.util import user_notifications
 
 
@@ -73,8 +75,17 @@ class ProductListView(BaseView, FilteredListView):
 
 class ProductDetailView(BaseView, DetailView):
     model = Product
-    template_name = "products/product_detail.html"  
+    template_name = "products/product_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        object = kwargs.get("object")
+        if object is not None:
+            logisticunitcode = LogisticUnitCode.objects.filter(entity=LOG_UNIT_TYPE_PRODUCT, entity_id=object.id)
+            if len(logisticunitcode) != 0:
+                context['logisticunitcode'] = logisticunitcode[0]
+
+        return context
 
 class ProductCreate(PermissionRequiredMixin, CreateView):
     model = Product
@@ -97,17 +108,26 @@ class ProductDelete(PermissionRequiredMixin, DeleteView):
 @login_required
 def product_add_qr(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    # check if exists previous code and delete
+    LogisticUnitCode.objects.filter(entity=LOG_UNIT_TYPE_PRODUCT, entity_id=product.id).delete()
+    # create base object
+    log_unit_code = LogisticUnitCode(
+        entity=LOG_UNIT_TYPE_PRODUCT, entity_id=product.id,
+        description=f"Product {product.id}: {product.name}",
+        rfid_code=generate_rfid_code(),
+        entity_url=product.get_absolute_url(), entity_api_url=product.get_api_url()
+    )
     full_url = request.build_absolute_uri(product.get_absolute_url())
     qr_image = qrcode.make(full_url)
-    qr_offset = Image.new('RGB', (340, 340), "white")
-    qr_offset.paste(qr_image)
-    files_name = f'Product{product.id}qr.png'
+    canvas = Image.new('RGB', (410, 410), "white")
+    draw = ImageDraw.Draw(canvas)
+    canvas.paste(qr_image)
+    file_name = f'qr_{product.id}_{str(uuid.uuid4())}.png'
     stream = BytesIO()
-    qr_offset.save(stream, 'PNG')
-    product.qrcode.save(files_name, File(stream), save=False)
-    qr_offset.close()
-    product.save()
-
+    canvas.save(stream, 'PNG')
+    log_unit_code.qr_code.save(file_name, File(stream), save=False)
+    canvas.close()
+    log_unit_code.save()
     # redirect to a new URL:
     return HttpResponseRedirect(product.get_absolute_url())
 
