@@ -94,12 +94,14 @@ class Client(models.Model):
 
 class ProductMoveType(models.Model):
     name = models.CharField(max_length=120)
+    description = models.CharField(max_length=240, blank=True)
 
     def __str__(self):
         return f"{self.name}"
 
 class ProductPackaging(models.Model):
     name = models.CharField(max_length=120)
+    description = models.CharField(max_length=240, blank=True)
 
     def __str__(self):
         return f"{self.name}"

@@ -4,7 +4,6 @@ from .models import (Product, ProductUnit, Provider, WhLocation, ProductMove, Pr
 
 
 admin.site.register(WhLocation)
-admin.site.register(ProductMoveType)
 admin.site.register(ProductPackaging)
 
 @admin.register(Client)
@@ -59,3 +58,9 @@ class LogisticUnitCodeAdmin(admin.ModelAdmin):
     fields = [('entity', 'entity_id'), 'description', 
               ('rfid_code', 'qr_code'),
               'entity_url', 'entity_api_url']
+
+
+@admin.register(ProductMoveType)
+class ProductMoveTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    fields = ['name', 'description']

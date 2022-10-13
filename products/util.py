@@ -10,19 +10,32 @@ PACKAGE_BOX = "Box"
 PACKAGE_PALLET = "Pallet"
 PACKAGE_OTHER = "Other"
 
-MOVE_ADD = "Increase by Buy"
-MOVE_ADD_RFID = "Increase by Buy with RFID tag"
-MOVE_MINUS = "Decrease by Sell"
-MOVE_MINUS_USE = "Decrease by Sell to internal usage"
-MOVE_CHANGE = "Change"
-MOVE_CHANGE_ERROR = "Change by Error"
-MOVE_QUALITY = "Quality Check"
-MOVE_VALUATION = "Change Valuation"
-MOVE_GROUPING = "Change Grouping"
-MOVE_LOCATION = "Change Location"
-MOVE_FIND_ONE = "RFID Find One"
-MOVE_FIND_ALL = "RFID Find All"
-MOVE_LECTURE = "RFID Lecture"
+MOVE_IN = "IN_BUY"
+MOVE_IN_DESC = "Increase stock by Buy"
+MOVE_IN_RFID = "IN_BUY_RFID"
+MOVE_IN_RFID_DESC = "Increase stock by Buy with RFID tag"
+MOVE_OUT = "OUT_SELL"
+MOVE_OUT_DESC = "Decrease stock by Sell"
+MOVE_OUT_USE = "OUT_USE"
+MOVE_OUT_USE_DESC = "Decrease stock to internal usage"
+MOVE_CHANGE = "CHANGE"
+MOVE_CHANGE_DESC = "Change"
+MOVE_CHANGE_ERROR = "CHANGE_ERROR"
+MOVE_CHANGE_ERROR_DESC = "Change by Error"
+MOVE_QUALITY = "QUALITY"
+MOVE_QUALITY_DESC = "Quality Check"
+MOVE_CHANGE_VALUATION = "CHANGE_VALUATION"
+MOVE_CHANGE_VALUATION_DESC = "Change Valuation"
+MOVE_CHANGE_GROUPING = "CHANGE_GROUPING"
+MOVE_CHANGE_GROUPING_DESC = "Change Grouping"
+MOVE_CHANGE_LOCATION = "CHANGE_LOCATION"
+MOVE_CHANGE_LOCATION_DESC = "Change Location"
+MOVE_RFID_FIND_ONE = "RFID_FIND_ONE"
+MOVE_RFID_FIND_ONE_DESC = "RFID Find One Handheld reader"
+MOVE_RFID_FIND_ALL = "RFID_FIND_ALL"
+MOVE_RFID_FIND_ALL_DESC = "RFID Find All by Handheld reader"
+MOVE_RFID_LECTURE = "RFID_LECTURE"
+MOVE_RFID_LECTURE_DESC = "RFID Lecture by Fixed Antenna"
 
 LOG_UNIT_TYPE_PRODUCT = "Product"
 LOG_UNIT_TYPE_PRODUCT_UNIT = "ProductUnit"
@@ -37,24 +50,32 @@ def create_demo_data() -> str:
     pack3.save()
 
     # create product moves
-    move_type1 = ProductMoveType(name = MOVE_ADD)
+    move_type1 = ProductMoveType(name = MOVE_IN, description = MOVE_IN_DESC)
     move_type1.save()
-    move_type2 = ProductMoveType(name = MOVE_MINUS)
+    move_type1b = ProductMoveType(name = MOVE_IN_RFID, description = MOVE_IN_RFID_DESC)
+    move_type1b.save()
+    move_type2 = ProductMoveType(name = MOVE_OUT, description = MOVE_OUT_DESC)
     move_type2.save()
-    move_type3 = ProductMoveType(name = MOVE_CHANGE)
+    move_type2b = ProductMoveType(name = MOVE_OUT_USE, description = MOVE_OUT_USE_DESC)
+    move_type2b.save()
+    move_type3 = ProductMoveType(name = MOVE_CHANGE, description = MOVE_CHANGE_DESC)
     move_type3.save()
-    move_type4 = ProductMoveType(name = MOVE_CHANGE_ERROR)
+    move_type4 = ProductMoveType(name = MOVE_CHANGE_ERROR, description = MOVE_CHANGE_ERROR_DESC)
     move_type4.save()
-    move_type5 = ProductMoveType(name = MOVE_LECTURE)
+    move_type5 = ProductMoveType(name = MOVE_QUALITY, description = MOVE_QUALITY_DESC)
     move_type5.save()
-    move_type6 = ProductMoveType(name = MOVE_QUALITY)
-    move_type6.save()
-    move_type7 = ProductMoveType(name = MOVE_VALUATION)
+    move_type7 = ProductMoveType(name = MOVE_CHANGE_VALUATION, description = MOVE_CHANGE_VALUATION_DESC)
     move_type7.save()
-    move_type8 = ProductMoveType(name = MOVE_FIND)
-    move_type8.save()
-    move_type9 = ProductMoveType(name = MOVE_VALUATION)
+    move_type7b = ProductMoveType(name = MOVE_CHANGE_GROUPING, description = MOVE_CHANGE_GROUPING_DESC)
+    move_type7b.save()
+    move_type9 = ProductMoveType(name = MOVE_CHANGE_LOCATION, description = MOVE_CHANGE_LOCATION_DESC)
     move_type9.save()
+    move_type10 = ProductMoveType(name = MOVE_RFID_FIND_ONE, description = MOVE_RFID_FIND_ONE_DESC)
+    move_type10.save()
+    move_type11 = ProductMoveType(name = MOVE_RFID_FIND_ALL, description = MOVE_RFID_FIND_ALL_DESC)
+    move_type11.save()
+    move_type12 = ProductMoveType(name = MOVE_RFID_LECTURE, description = MOVE_RFID_LECTURE_DESC)
+    move_type12.save()
 
     # create 20 providers with 10 products
     for i in range(1, 21):
