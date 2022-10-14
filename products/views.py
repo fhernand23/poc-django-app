@@ -17,7 +17,7 @@ from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from products.models import ProductMoveType, Provider, Product, ProductUnit, WhLocation, Client, LogisticUnitCode, ProductMove
-from products.forms import InProductUnitForm
+from products.forms import InProductUnitForm, OutProductUnitForm
 from products.util import (LOG_UNIT_TYPE_PRODUCT, generate_rfid_code, MOVE_IN, MOVE_IN_RFID, MOVE_OUT, MOVE_OUT_USE,
                            MOVE_CHANGE, MOVE_CHANGE_ERROR, MOVE_QUALITY, MOVE_CHANGE_VALUATION, MOVE_CHANGE_GROUPING,
                            MOVE_CHANGE_LOCATION, MOVE_RFID_FIND_ONE, MOVE_RFID_FIND_ALL, MOVE_RFID_LECTURE,
@@ -167,6 +167,7 @@ def product_in_stock(request, pk):
                 expiration_date = form.cleaned_data['expiration_date'],
                 add_qr = form.cleaned_data['add_qr'],
                 rfid_code = form.cleaned_data['rfid_code'],
+                description = form.cleaned_data['description'],
             )
             product_move.save()
             proccess_product_move(
@@ -361,3 +362,58 @@ class ProductUnitListView(BaseView, FilteredListView):
     template_name = "products/productunit_list.html"
     context_object_name = "productunits"
     filterset_class = ProductUnitFilterset
+
+
+@login_required
+def product_out_stock(request, pk):
+    productunit = get_object_or_404(ProductUnit, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = OutProductUnitForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            move_type = ProductMoveType.objects.filter(name__exact=MOVE_OUT)[0]
+            if form.cleaned_data['internal_usage']:
+                move_type = ProductMoveType.objects.filter(name__exact=MOVE_OUT_USE)[0]
+            product_move = ProductMove(
+                product = productunit.product,
+                product_unit = productunit,
+                move_type = move_type,
+                move_date = form.cleaned_data['move_date'],
+                quantity = form.cleaned_data['quantity'],
+                user = request.user,
+                description = form.cleaned_data['description'],
+            )
+            if move_type.name == MOVE_OUT:
+                product_move.client = form.cleaned_data['client']
+                product_move.unit_price = form.cleaned_data['unit_price']
+                product_move.unit_taxes = form.cleaned_data['unit_taxes']
+                product_move.total_price = form.cleaned_data['total_price']
+
+            product_move.save()
+            proccess_product_move(
+                product_move=product_move
+            )
+            # redirect to a new URL:
+            return HttpResponseRedirect(productunit.product.get_absolute_url())
+
+    default_date = datetime.date.today()
+    form = OutProductUnitForm(
+        initial={
+            'move_date': default_date, 'quantity': 0,
+            'description': '',
+            'unit_price': 0.0, 'unit_taxes': 0.0, 'total_price': 0.0
+        }
+    )
+
+    context = {
+        'form': form,
+        'productunit': productunit,
+    }
+
+    return render(request, 'products/product_out_stock.html', context)

@@ -37,6 +37,9 @@
                         {% endif %}
                         <li>Expiration Date: {{productmove.expiration_date|date:'d/m/Y'|default_if_none:""}}</li>
                         <li>Add QR: {{productmove.add_qr}}, RFID Code: {{productmove.rfid_code|default_if_none:""}}</li>
+                        {% if productmove.description %}
+                        <li>Description: {{productmove.description}}</li>
+                        {% endif %}
                         <li>Creation date: {{productmove.date_created|date:'d/m/Y'}}, Last update:
                             {{productmove.date_updated|date:'d/m/Y'}}</li>
                     </ul>

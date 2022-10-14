@@ -204,3 +204,11 @@ def proccess_product_move(product_move: ProductMove):
             entity_url=product_unit.get_absolute_url(), entity_api_url=product_unit.get_api_url()
         )
         log_unit_code.save()
+    elif product_move.move_type.name == MOVE_OUT:
+        product_unit = product_move.product_unit
+        product_unit.quantity = product_unit.quantity - product_move.quantity
+        product_unit.save()
+    elif product_move.move_type.name == MOVE_OUT_USE:
+        product_unit = product_move.product_unit
+        product_unit.quantity = product_unit.quantity - product_move.quantity
+        product_unit.save()

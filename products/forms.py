@@ -24,3 +24,14 @@ class InProductUnitForm(forms.Form):
     description = forms.CharField(max_length=240, required=False)
     wh_location = forms.ModelChoiceField(queryset=locations_set, required=False)
     expiration_date = forms.DateField(required=False)
+
+
+class OutProductUnitForm(forms.Form):
+    move_date = forms.DateField()
+    quantity = forms.IntegerField(min_value=0)
+    client = forms.ModelChoiceField(queryset=clients_set, required=False)
+    unit_price = forms.DecimalField(max_digits=8, decimal_places=2, required=False)
+    unit_taxes = forms.DecimalField(max_digits=8, decimal_places=2, required=False)
+    total_price = forms.DecimalField(max_digits=8, decimal_places=2, required=False)
+    description = forms.CharField(max_length=240, required=False)
+    internal_usage = forms.BooleanField(required=False)

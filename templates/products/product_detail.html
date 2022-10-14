@@ -58,23 +58,41 @@
               <tr>
                 <th>Date</th>
                 <th>Quantity</th>
-                <th>Packaging</th>
                 <th>Location</th>
-                <th>Provider</th>
+                <th>Unit Valuation</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {% for produnit in product.productunit_set.all %}
               <tr>
-                <td>{{produnit.date_created|date:'d/m/Y'}}</td>
-                <td>{{produnit.quantity}}</td>
-                <td>{{produnit.product_packaging}}</td>
-                <td>{{produnit.wh_location}}</td>
-                <td>{{produnit.provider}}</td>
+                <td>
+                  {{produnit.date_created|date:'d/m/Y'}}
+                  {% if produnit.expiration_date %}
+                  (Exp. date: {{produnit.expiration_created|date:'d/m/Y'}})</td>
+                {% endif %}
+                </td>
+                <td>
+                  {{produnit.quantity}}
+                  ({{produnit.product_packaging}})
+                </td>
+                <td>{{produnit.wh_location|default_if_none:""}}</td>
+                <td>{{produnit.unit_valuation|default_if_none:""}}</td>
                 <td nowrap>
-                  <a href="#" class="btn btn-outline-primary">
-                    <i class="bi bi-pencil"></i></a>
+                  <a href="{% url 'product-out-stock' produnit.id %}" class="btn btn-outline-success"
+                    title="Out by sell">
+                    <i class="bi bi-box-arrow-right"></i></a>
+                  <a href="{% url 'product-out-stock' produnit.id %}" class="btn btn-outline-primary"
+                    title="Out by usage or damage">
+                    <i class="bi bi-box-arrow-down"></i></a>
+                  <a href="#" class="btn btn-outline-info" title="Quality Check">
+                    <i class="bi bi-clipboard-check"></i></a>
+                  <a href="#" class="btn btn-outline-info" title="Change Valuation">
+                    <i class="bi bi-currency-dollar"></i></a>
+                  <a href="#" class="btn btn-outline-info" title="Change Location">
+                    <i class="bi bi-geo"></i></a>
+                  <a href="#" class="btn btn-outline-info" title="Change Grouping">
+                    <i class="bi bi-box"></i></a>
                 </td>
               </tr>
               {% endfor %}
