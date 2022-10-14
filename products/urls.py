@@ -2,8 +2,9 @@ from django.urls import path
 from .views import (ProviderListView, ProviderDetailView, ProviderCreate, ProviderDelete, ProviderUpdate,
                     ClientListView, ClientDetailView, ClientCreate, ClientDelete, ClientUpdate,
                     ProductListView, ProductDetailView, ProductCreate, ProductDelete, ProductUpdate,
-                    product_add_qr, product_add_stock,
-                    WhLocationListView, WhLocationDetailView, WhLocationCreate, WhLocationDelete, WhLocationUpdate)
+                    product_add_qr, product_in_stock,
+                    WhLocationListView, WhLocationDetailView, WhLocationCreate, WhLocationDelete, WhLocationUpdate,
+                    ProductMoveDetailView, ProductUnitDetailView, ProductMoveListView, ProductUnitListView)
 
 urlpatterns = [
     path("products/", ProductListView.as_view(), name="products"),
@@ -14,6 +15,10 @@ urlpatterns = [
     path("client/<int:pk>/", ClientDetailView.as_view(), name="client-detail"),
     path("whlocations/", WhLocationListView.as_view(), name="whlocations"),
     path("whlocation/<int:pk>/", WhLocationDetailView.as_view(), name="whlocation-detail"),
+    path("productmove/<int:pk>/", ProductMoveDetailView.as_view(), name="productmove-detail"),
+    path("productunit/<int:pk>/", ProductUnitDetailView.as_view(), name="productunit-detail"),
+    path("productmoves/", ProductMoveListView.as_view(), name="productmoves"),
+    path("productunits/", ProductUnitListView.as_view(), name="productunits"),
 ]
 
 # Add URLConf to create, update, and delete products
@@ -22,7 +27,7 @@ urlpatterns += [
     path('product/<int:pk>/update/', ProductUpdate.as_view(), name='product-update'),
     path('product/<int:pk>/delete/', ProductDelete.as_view(), name='product-delete'),
     path('product/<int:pk>/add_qr/', product_add_qr, name='product-add-qr'),
-    path('product/<int:pk>/add_stock/', product_add_stock, name='product-add-stock'),
+    path('product/<int:pk>/in_stock/', product_in_stock, name='product-in-stock'),
     # path('product/<int:pk>/remove_stock/', product_remove_stock, name='product-remove-stock'),
 ]
 

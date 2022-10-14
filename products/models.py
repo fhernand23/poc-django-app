@@ -139,7 +139,7 @@ class ProductUnit(models.Model):
 class ProductMove(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     provider = models.ForeignKey(Provider, on_delete=models.DO_NOTHING, null=True, blank=True)
-    client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    client = models.ForeignKey(Client, on_delete=models.DO_NOTHING, null=True, blank=True)
     move_type = models.ForeignKey(ProductMoveType, on_delete=models.DO_NOTHING, null=True, blank=True)
     wh_location_to = models.ForeignKey(WhLocation, on_delete=models.SET_NULL, null=True, blank=True)
     product_packaging = models.ForeignKey(ProductPackaging, on_delete=models.SET_NULL, null=True, blank=True)
@@ -156,6 +156,8 @@ class ProductMove(models.Model):
     uid = models.UUIDField(default=uuid.uuid4)
     expiration_date = models.DateTimeField(null=True, blank=True)
     related_units = models.CharField(max_length=120, null=True, blank=True)
+    add_qr = models.BooleanField(default=False)
+    rfid_code = models.CharField(max_length=240, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

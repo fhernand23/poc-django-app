@@ -16,9 +16,12 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from products.models import Provider, Product, ProductUnit, WhLocation, Client, LogisticUnitCode
-from products.forms import AddProductUnitForm
-from products.util import LOG_UNIT_TYPE_PRODUCT, generate_rfid_code
+from products.models import ProductMoveType, Provider, Product, ProductUnit, WhLocation, Client, LogisticUnitCode, ProductMove
+from products.forms import InProductUnitForm
+from products.util import (LOG_UNIT_TYPE_PRODUCT, generate_rfid_code, MOVE_IN, MOVE_IN_RFID, MOVE_OUT, MOVE_OUT_USE,
+                           MOVE_CHANGE, MOVE_CHANGE_ERROR, MOVE_QUALITY, MOVE_CHANGE_VALUATION, MOVE_CHANGE_GROUPING,
+                           MOVE_CHANGE_LOCATION, MOVE_RFID_FIND_ONE, MOVE_RFID_FIND_ALL, MOVE_RFID_LECTURE,
+                           proccess_product_move)
 from pages.util import user_notifications
 
 
@@ -133,50 +136,60 @@ def product_add_qr(request, pk):
 
 
 @login_required
-def product_add_stock(request, pk):
+def product_in_stock(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
     # If this is a POST request then process the Form data
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = AddProductUnitForm(request.POST)
+        form = InProductUnitForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            product_unit = ProductUnit(
+            move_type = ProductMoveType.objects.filter(name__exact=MOVE_IN)[0]
+            if form.cleaned_data['rfid_code']:
+                move_type = ProductMoveType.objects.filter(name__exact=MOVE_IN_RFID)[0]
+            product_move = ProductMove(
                 product = product,
-                action = 'buy',
-                quantity = form.cleaned_data['quantity'],
-                user = request.user,
+                move_type = move_type,
+                provider = form.cleaned_data['provider'],
+                wh_location_to = form.cleaned_data['wh_location'],
+                product_packaging = form.cleaned_data['packaging'],
                 move_date = form.cleaned_data['move_date'],
-                move_description = form.cleaned_data['description'],
                 lot = form.cleaned_data['lot'],
+                quantity = form.cleaned_data['quantity'],
+                unit_price = form.cleaned_data['unit_price'],
+                unit_taxes = form.cleaned_data['unit_taxes'],
+                total_price = form.cleaned_data['total_price'],
+                user = request.user,
+                expiration_date = form.cleaned_data['expiration_date'],
+                add_qr = form.cleaned_data['add_qr'],
+                rfid_code = form.cleaned_data['rfid_code'],
             )
-            product_unit.save()
-            if form.cleaned_data['add_qr']:
-                qr_image = qrcode.make(product_unit.get_absolute_url())
-                qr_offset = Image.new('RGB', (310, 310), "white")
-                qr_offset.paste(qr_image)
-                files_name = f'Product{product.id}qr.png'
-                stream = BytesIO()
-                qr_offset.save(stream, 'PNG')
-                product_unit.qrcode.save(files_name, File(stream), save=False)
-                qr_offset.close()
-                product_unit.save()
+            product_move.save()
+            proccess_product_move(
+                product_move=product_move
+            )
             # redirect to a new URL:
             return HttpResponseRedirect(product.get_absolute_url())
 
     default_date = datetime.date.today()
-    form = AddProductUnitForm(initial={'move_date': default_date, 'quantity': 0, 'add_qr': False, 'description': '', 'lot': ''})
+    form = InProductUnitForm(
+        initial={
+            'move_date': default_date, 'quantity': 0, 'add_qr': False, 
+            'description': '', 'lot': '',
+            'unit_price': 0.0, 'unit_taxes': 0.0, 'total_price': 0.0
+        }
+    )
 
     context = {
         'form': form,
         'product': product,
     }
 
-    return render(request, 'products/product_add_stock.html', context)
+    return render(request, 'products/product_in_stock.html', context)
 
 
 # providers section
@@ -306,3 +319,45 @@ class ClientDelete(PermissionRequiredMixin, DeleteView):
     model = Provider
     success_url = reverse_lazy('clients')
     permission_required = 'client.can_delete_client'
+
+
+class ProductMoveDetailView(BaseView, DetailView):
+    model = ProductMove
+    template_name = "products/productmove_detail.html"
+
+
+class ProductUnitDetailView(BaseView, DetailView):
+    model = ProductUnit
+    template_name = "products/productunit_detail.html"
+
+
+class ProductMoveFilterset(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = ProductMove
+        fields = ['name']
+
+
+class ProductMoveListView(BaseView, FilteredListView):
+    model = ProductMove
+    paginate_by = 10
+    template_name = "products/productmove_list.html"
+    context_object_name = "productmoves"
+    filterset_class = ProductMoveFilterset
+
+
+class ProductUnitFilterset(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = ProductUnit
+        fields = ['name']
+
+
+class ProductUnitListView(BaseView, FilteredListView):
+    model = ProductUnit
+    paginate_by = 10
+    template_name = "products/productunit_list.html"
+    context_object_name = "productunits"
+    filterset_class = ProductUnitFilterset

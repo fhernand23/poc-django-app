@@ -29,6 +29,16 @@
 					<i class="align-middle" data-feather="map-pin"></i> <span class="align-middle">Locations</span>
 				</a>
 			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="{% url 'productunits' %}">
+					<i class="align-middle" data-feather="box"></i> <span class="align-middle">Stock</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a class="sidebar-link" href="{% url 'productmoves' %}">
+					<i class="align-middle" data-feather="activity"></i> <span class="align-middle">Move logs</span>
+				</a>
+			</li>
 			{% if user.is_authenticated %}
 			<li class="sidebar-header">
 				API

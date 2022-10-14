@@ -1,0 +1,82 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Move Logs{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3>Product Move Logs</h3>
+        </div>
+
+        <div class="col-auto ml-auto text-right mt-n1">
+            <form action="" method="get" class="d-none d-sm-inline-block">
+                <div class="input-group">
+                    <input type="text" name="name" class="form-control" placeholder="Search..." aria-label="Search"
+                        value="{% firstof filterset.form.name.value "" %}">
+                    <button type="submit" class="btn btn-info" type="button">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+            </form>
+            {% if filterset.form.name.value %}
+            <form action="" method="get" class="d-none d-sm-inline-block">
+                <div class="input-group">
+                    <button type="submit" class="btn btn-info" type="button">
+                        <i class="bi bi-x-lg"></i> Clear
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        {% if productmoves %}
+        <div class="col-12">
+            <div class="card">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Move</th>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Provider</th>
+                            <th>Client</th>
+                            <th>Packaging</th>
+                            <th>Quantity</th>
+                            <th>User</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for productmove in productmoves %}
+                        <tr>
+                            <td>{{productmove.move_type.description }}</td>
+                            <td>{{productmove.move_date|date:'d/m/Y' }}</td>
+                            <td>{{productmove.product }}</td>
+                            <td>{{productmove.provider|default_if_none:""}}</td>
+                            <td>{{productmove.client|default_if_none:""}}</td>
+                            <td>{{productmove.product_packaging }}</td>
+                            <td>{{productmove.quantity }}</td>
+                            <td>{{productmove.user }}</td>
+                            <td nowrap>
+                                <a href="{{productmove.get_absolute_url}}" class="btn btn-outline-info">
+                                    <i class="bi bi-journal-text"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% include 'includes/pagination.html' %}
+        {% else %}
+        <p>There isn't product move logs</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

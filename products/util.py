@@ -1,6 +1,7 @@
 import random
 from pages.models import Notification
-from products.models import Product, Provider, ProductPackaging, ProductMoveType, Client, WhLocation
+from products.models import (Product, Provider, ProductPackaging, ProductMoveType, Client, WhLocation,
+                             ProductMove, ProductUnit, LogisticUnitCode)
 from accounts.models import AppUser
 from pages.util import rstri
 
@@ -160,3 +161,46 @@ def create_demo_data() -> str:
 
 def generate_rfid_code() -> str:
     return "123456789"
+
+
+def proccess_product_move(product_move: ProductMove):
+    assert product_move
+    assert product_move.move_type
+    if product_move.move_type.name == MOVE_IN:
+        product_unit = ProductUnit(
+            product = product_move.product,
+            provider = product_move.provider,
+            quantity = product_move.quantity,
+            wh_location = product_move.wh_location_to,
+            product_packaging = product_move.product_packaging,
+            user = product_move.user,
+            lot = product_move.lot,
+            unit_valuation = product_move.unit_price,
+            expiration_date = product_move.expiration_date,
+            related_moves = product_move.pk
+        )
+        product_unit.save()
+        # TODO check if qr required & generate
+    elif product_move.move_type.name == MOVE_IN_RFID:
+        product_unit = ProductUnit(
+            product = product_move.product,
+            provider = product_move.provider,
+            quantity = product_move.quantity,
+            wh_location = product_move.wh_location_to,
+            product_packaging = product_move.product_packaging,
+            user = product_move.user,
+            lot = product_move.lot,
+            unit_valuation = product_move.unit_price,
+            expiration_date = product_move.expiration_date,
+            related_moves = product_move.pk
+        )
+        product_unit.save()
+        # TODO check if qr required & generate
+        # create base object
+        log_unit_code = LogisticUnitCode(
+            entity=LOG_UNIT_TYPE_PRODUCT_UNIT, entity_id=product_unit.id,
+            description=f"ProductUnit {product_unit.id}",
+            rfid_code=product_move.rfid_code,
+            entity_url=product_unit.get_absolute_url(), entity_api_url=product_unit.get_api_url()
+        )
+        log_unit_code.save()

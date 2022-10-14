@@ -1,0 +1,48 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Product Move Log{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Product Move Log {{productmove.id}}</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{productmove.move_type.description}} ({{productmove.move_type.name}})
+                        by {{productmove.user}}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Fecha: {{productmove.move_date|date:'d/m/Y'}}</li>
+                        <li>Product: {{productmove.product}}</li>
+                        <li>Provider: {{productmove.provider|default_if_none:""}}</li>
+                        <li>Cliente: {{productmove.client|default_if_none:""}}</li>
+                        <li>Location to: {{productmove.wh_location_to|default_if_none:""}}</li>
+                        <li>Quantity: {{productmove.quantity}}, Packaging: {{productmove.product_packaging}}, Lot:
+                            {{productmove.lot|default_if_none:""}}</li>
+                        <li>Unit price: {{productmove.unit_price|default_if_none:""}}, Taxes:
+                            {{productmove.unit_taxes|default_if_none:""}}, Total:
+                            {{productmove.total_price|default_if_none:""}}</li>
+                        {% if productmove.new_unit_price %}
+                        <li>New unit price: {{productmove.new_unit_price}}, New taxes: {{productmove.new_unit_taxes}},
+                            New total: {{productmove.new_total_price}}</li>
+                        {% endif %}
+                        <li>Expiration Date: {{productmove.expiration_date|date:'d/m/Y'|default_if_none:""}}</li>
+                        <li>Add QR: {{productmove.add_qr}}, RFID Code: {{productmove.rfid_code|default_if_none:""}}</li>
+                        <li>Creation date: {{productmove.date_created|date:'d/m/Y'}}, Last update:
+                            {{productmove.date_updated|date:'d/m/Y'}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
