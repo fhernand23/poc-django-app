@@ -153,6 +153,7 @@ class ProductMove(models.Model):
     new_unit_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     new_unit_taxes = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     new_total_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    unit_valuation = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     user = models.ForeignKey(AppUser, on_delete=models.SET_NULL, null=True, blank=True)
     uid = models.UUIDField(default=uuid.uuid4)
     expiration_date = models.DateTimeField(null=True, blank=True)

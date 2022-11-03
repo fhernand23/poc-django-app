@@ -85,13 +85,16 @@
                   <a href="{% url 'product-out-stock' produnit.id %}" class="btn btn-outline-primary"
                     title="Out by usage or damage">
                     <i class="bi bi-box-arrow-down"></i></a>
-                  <a href="#" class="btn btn-outline-info" title="Quality Check">
+                  <a href="{% url 'product-quality-check' produnit.id %}" class="btn btn-outline-info"
+                    title="Quality Check">
                     <i class="bi bi-clipboard-check"></i></a>
                   <a href="#" class="btn btn-outline-info" title="Change Valuation">
                     <i class="bi bi-currency-dollar"></i></a>
-                  <a href="#" class="btn btn-outline-info" title="Change Location">
+                  <a href="{% url 'product-change-location' produnit.id %}" class="btn btn-outline-info"
+                    title="Change Location">
                     <i class="bi bi-geo"></i></a>
-                  <a href="#" class="btn btn-outline-info" title="Change Grouping">
+                  <a href="{% url 'product-change-grouping' produnit.id %}" class="btn btn-outline-info"
+                    title="Change Grouping">
                     <i class="bi bi-box"></i></a>
                 </td>
               </tr>

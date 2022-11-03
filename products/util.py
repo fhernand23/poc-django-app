@@ -212,3 +212,11 @@ def proccess_product_move(product_move: ProductMove):
         product_unit = product_move.product_unit
         product_unit.quantity = product_unit.quantity - product_move.quantity
         product_unit.save()
+    elif product_move.move_type.name == MOVE_CHANGE_LOCATION:
+        product_unit = product_move.product_unit
+        product_unit.wh_location = product_move.wh_location_to
+        product_unit.save()
+    elif product_move.move_type.name == MOVE_CHANGE_GROUPING:
+        product_unit = product_move.product_unit
+        product_unit.product_packaging = product_move.product_packaging
+        product_unit.save()

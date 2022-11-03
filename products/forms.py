@@ -35,3 +35,21 @@ class OutProductUnitForm(forms.Form):
     total_price = forms.DecimalField(max_digits=8, decimal_places=2, required=False)
     description = forms.CharField(max_length=240, required=False)
     internal_usage = forms.BooleanField(required=False)
+
+
+class QualityProductUnitForm(forms.Form):
+    move_date = forms.DateField()
+    quantity = forms.IntegerField(min_value=0)
+    description = forms.CharField(max_length=240)
+
+
+class LocationProductUnitForm(forms.Form):
+    move_date = forms.DateField()
+    wh_location_to = forms.ModelChoiceField(queryset=locations_set, required=False)
+    description = forms.CharField(max_length=240, required=False)
+
+
+class GroupingProductUnitForm(forms.Form):
+    move_date = forms.DateField()
+    packaging_to = forms.ModelChoiceField(queryset=packaging_set)
+    description = forms.CharField(max_length=240, required=False)

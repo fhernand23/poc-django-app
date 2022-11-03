@@ -17,7 +17,8 @@ from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from products.models import ProductMoveType, Provider, Product, ProductUnit, WhLocation, Client, LogisticUnitCode, ProductMove
-from products.forms import InProductUnitForm, OutProductUnitForm
+from products.forms import (InProductUnitForm, OutProductUnitForm, QualityProductUnitForm,
+                            LocationProductUnitForm, GroupingProductUnitForm)
 from products.util import (LOG_UNIT_TYPE_PRODUCT, generate_rfid_code, MOVE_IN, MOVE_IN_RFID, MOVE_OUT, MOVE_OUT_USE,
                            MOVE_CHANGE, MOVE_CHANGE_ERROR, MOVE_QUALITY, MOVE_CHANGE_VALUATION, MOVE_CHANGE_GROUPING,
                            MOVE_CHANGE_LOCATION, MOVE_RFID_FIND_ONE, MOVE_RFID_FIND_ALL, MOVE_RFID_LECTURE,
@@ -417,3 +418,145 @@ def product_out_stock(request, pk):
     }
 
     return render(request, 'products/product_out_stock.html', context)
+
+
+@login_required
+def product_quality_check(request, pk):
+    productunit = get_object_or_404(ProductUnit, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = QualityProductUnitForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            move_type = ProductMoveType.objects.filter(name__exact=MOVE_QUALITY)[0]
+            product_move = ProductMove(
+                product = productunit.product,
+                product_unit = productunit,
+                move_type = move_type,
+                move_date = form.cleaned_data['move_date'],
+                quantity = form.cleaned_data['quantity'],
+                user = request.user,
+                description = form.cleaned_data['description'],
+            )
+            product_move.save()
+            proccess_product_move(
+                product_move=product_move
+            )
+            # redirect to a new URL:
+            return HttpResponseRedirect(productunit.product.get_absolute_url())
+
+    default_date = datetime.date.today()
+    form = QualityProductUnitForm(
+        initial={
+            'move_date': default_date, 'quantity': 0,
+            'description': '',
+        }
+    )
+
+    context = {
+        'form': form,
+        'productunit': productunit,
+    }
+
+    return render(request, 'products/product_quality_check.html', context)
+
+
+@login_required
+def product_change_location(request, pk):
+    productunit = get_object_or_404(ProductUnit, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = LocationProductUnitForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            move_type = ProductMoveType.objects.filter(name__exact=MOVE_CHANGE_LOCATION)[0]
+            product_move = ProductMove(
+                product = productunit.product,
+                product_unit = productunit,
+                move_type = move_type,
+                move_date = form.cleaned_data['move_date'],
+                user = request.user,
+                description = form.cleaned_data['description'],
+                quantity = productunit.quantity,
+                wh_location_to = form.cleaned_data['wh_location_to'],
+            )
+
+            product_move.save()
+            proccess_product_move(
+                product_move=product_move
+            )
+            # redirect to a new URL:
+            return HttpResponseRedirect(productunit.product.get_absolute_url())
+
+    default_date = datetime.date.today()
+    form = LocationProductUnitForm(
+        initial={
+            'move_date': default_date,
+            'description': ''
+        }
+    )
+
+    context = {
+        'form': form,
+        'productunit': productunit,
+    }
+
+    return render(request, 'products/product_change_location.html', context)
+
+
+@login_required
+def product_change_grouping(request, pk):
+    productunit = get_object_or_404(ProductUnit, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = GroupingProductUnitForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            move_type = ProductMoveType.objects.filter(name__exact=MOVE_CHANGE_GROUPING)[0]
+            product_move = ProductMove(
+                product = productunit.product,
+                product_unit = productunit,
+                move_type = move_type,
+                move_date = form.cleaned_data['move_date'],
+                user = request.user,
+                description = form.cleaned_data['description'],
+                quantity = productunit.quantity,
+                product_packaging = form.cleaned_data['packaging_to'],
+            )
+
+            product_move.save()
+            proccess_product_move(
+                product_move=product_move
+            )
+            # redirect to a new URL:
+            return HttpResponseRedirect(productunit.product.get_absolute_url())
+
+    default_date = datetime.date.today()
+    form = GroupingProductUnitForm(
+        initial={
+            'move_date': default_date,
+            'description': ''
+        }
+    )
+
+    context = {
+        'form': form,
+        'productunit': productunit,
+    }
+
+    return render(request, 'products/product_change_grouping.html', context)

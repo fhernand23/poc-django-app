@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (ProviderListView, ProviderDetailView, ProviderCreate, ProviderDelete, ProviderUpdate,
                     ClientListView, ClientDetailView, ClientCreate, ClientDelete, ClientUpdate,
                     ProductListView, ProductDetailView, ProductCreate, ProductDelete, ProductUpdate,
-                    product_add_qr, product_in_stock, product_out_stock,
+                    product_add_qr, product_in_stock, product_out_stock, product_quality_check,
+                    product_change_location, product_change_grouping,
                     WhLocationListView, WhLocationDetailView, WhLocationCreate, WhLocationDelete, WhLocationUpdate,
                     ProductMoveDetailView, ProductUnitDetailView, ProductMoveListView, ProductUnitListView)
 
@@ -29,6 +30,9 @@ urlpatterns += [
     path('product/<int:pk>/add_qr/', product_add_qr, name='product-add-qr'),
     path('product/<int:pk>/in_stock/', product_in_stock, name='product-in-stock'),
     path('productunit/<int:pk>/out_stock/', product_out_stock, name='product-out-stock'),
+    path('productunit/<int:pk>/quality_check/', product_quality_check, name='product-quality-check'),
+    path('productunit/<int:pk>/change_location/', product_change_location, name='product-change-location'),
+    path('productunit/<int:pk>/change_grouping/', product_change_grouping, name='product-change-grouping'),
 ]
 
 # Add URLConf to create, update, and delete provider
