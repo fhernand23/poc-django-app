@@ -9,8 +9,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("products/", include("products.urls")),
     path("api/", include("api.urls")),
-    path("api/products/", include("apiproducts.urls")),
-    path('api/v2/', include('django_project.routers')),
+    path("apiprd/", include("apiproducts.urls")),
     path("", include("pages.urls")),
 ]
 

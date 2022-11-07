@@ -1,7 +1,7 @@
 from rest_framework import mixins, viewsets
 
-from products.models import Provider, WhLocation
-from .serializers import ProviderSerializer, WhLocationSerializer
+from products.models import Provider, WhLocation, ProductPackaging
+from .serializers import ProviderSerializer, WhLocationSerializer, ProductPackagingSerializer
 
 class WhLocationGenericViewSet(viewsets.ModelViewSet):
     '''
@@ -29,5 +29,12 @@ class ProviderViewSet(
     serializer_class = ProviderSerializer
     lookup_field = 'pk' # default
 
-# product_list_view = ProductGenericViewSet.as_view({'get': 'list'})
-# product_detail_view = ProductGenericViewSet.as_view({'get': 'retrieve'})
+
+class ProductPackagingViewSet(viewsets.ReadOnlyModelViewSet):
+    '''
+    get -> list -> Queryset
+    get -> retrieve -> Product Instance Detail View 
+    '''
+    queryset = ProductPackaging.objects.all()
+    serializer_class = ProductPackagingSerializer
+    lookup_field = 'pk' # default
