@@ -55,7 +55,15 @@
                     <tbody>
                         {% for productunit in productunits %}
                         <tr>
-                            <td>{{ productunit.product }}</td>
+                            <td>
+                                {{ productunit.product }}
+                                {% if user.is_superuser %}
+                                <br />
+                                Url: {{ productunit.get_absolute_url }}
+                                <br />
+                                Api Url: {{ productunit.get_api_url }}
+                                {% endif  %}
+                            </td>
                             <td>{{ productunit.provider }}</td>
                             <td>{{ productunit.quantity }}</td>
                             <td>{{ productunit.unit_valuation }}</td>

@@ -55,7 +55,15 @@
                     <tbody>
                         {% for productmove in productmoves %}
                         <tr>
-                            <td>{{productmove.move_type.description }}</td>
+                            <td>
+                                {{productmove.move_type.description }}
+                                {% if user.is_superuser %}
+                                <br />
+                                Url: {{ productmove.get_absolute_url }}
+                                <br />
+                                Api Url: {{ productmove.get_api_url }}
+                                {% endif  %}
+                            </td>
                             <td>{{productmove.move_date|date:'d/m/Y' }}</td>
                             <td>{{productmove.product }}</td>
                             <td>{{productmove.provider|default_if_none:""}}</td>

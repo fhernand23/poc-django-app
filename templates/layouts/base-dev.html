@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,13 +11,13 @@
 	<meta name="keywords"
 		content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-	<link rel="shortcut icon" href="/static/assets/img/icons/icon-48x48.png" />
+	<link rel="shortcut icon" href="{% static 'assets/img/icons/icon-48x48.png' %}" />
 
 	<title>
 		Django AdminKit - {% block title %}{% endblock %} | AppSeed
 	</title>
 
-	<link href="/static/assets/css/app.css" rel="stylesheet">
+	<link href="{% static 'assets/css/app.css' %}" rel="stylesheet">
 
 	<!-- Specific Page CSS goes HERE  -->
 	{% block stylesheets %}{% endblock stylesheets %}

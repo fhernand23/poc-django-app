@@ -59,6 +59,14 @@
                         <li>
                             Contact: <i class="align-middle" data-feather="phone"></i> {{ client.contact }}
                         </li>
+                        {% if user.is_superuser %}
+                        <li>
+                            Url: {{ client.get_absolute_url }}
+                        </li>
+                        <li>
+                            Api Url: {{ client.get_api_url }}
+                        </li>
+                        {% endif  %}
                     </ul>
                     <a href="{{ client.get_absolute_url }}" class="btn btn-info"><i class="bi bi-journal-text"></i>
                         Details</a>

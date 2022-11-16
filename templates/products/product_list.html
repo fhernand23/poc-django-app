@@ -53,6 +53,16 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ product.short_description }}</p>
+                    {% if user.is_superuser %}
+                    <ul>
+                        <li>
+                            Url: {{ product.get_absolute_url }}
+                        </li>
+                        <li>
+                            Api Url: {{ product.get_api_url }}
+                        </li>
+                    </ul>
+                    {% endif  %}
                     <a href="{{ product.get_absolute_url }}" class="btn btn-info"><i class="bi bi-journal-text"></i>
                         Details</a>
                 </div>

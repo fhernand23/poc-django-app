@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from products.models import Product, Provider, WhLocation, ProductPackaging
+from products.models import Product, Provider, WhLocation, ProductPackaging, Client
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -52,4 +52,15 @@ class ProductPackagingSerializer(serializers.ModelSerializer):
             'pk',
             'name',
             'description',
+        ]
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = [
+            'pk',
+            'name',
+            'cuit',
+            'contact',
         ]

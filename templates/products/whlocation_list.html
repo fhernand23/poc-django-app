@@ -51,7 +51,12 @@
                         {% for whlocation in whlocations %}
                         <tr>
                             <td>{{ whlocation.name }}</td>
-                            <td>{{ whlocation.description }}</td>
+                            <td>
+                                {{ whlocation.description }}
+                                {% if user.is_superuser %}
+                                (Url: {{ whlocation.get_absolute_url }}, Api Url: {{ whlocation.get_api_url }})
+                                {% endif  %}
+                            </td>
                             <td nowrap>
                                 <a href="{{ whlocation.get_absolute_url }}" class="btn btn-outline-info">
                                     <i class="bi bi-journal-text"></i> Details</a>

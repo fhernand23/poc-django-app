@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "aws_region": "us-east-1",
+        "django_settings": "django_project.settings",
+        "profile_name": "default",
+        "project_name": "poc-django-app",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-fqi43129g",
+        "timeout_seconds": 400
+    }
+}

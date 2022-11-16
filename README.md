@@ -9,6 +9,7 @@ Based on DjangoX (https://github.com/wsvincent/djangox)
 - Install via [Pip](https://pypi.org/project/pip/) or [Docker](https://www.docker.com/)
 - User log in/out, sign up, password reset via [django-allauth](https://github.com/pennersr/django-allauth)
 - Static files configured with [Whitenoise](http://whitenoise.evans.io/en/stable/index.html)
+Deleted to be served in S3
 - Styling with AdminKit (Bootstrap v5 based template) 
 - Debugging with [django-debug-toolbar](https://github.com/jazzband/django-debug-toolbar)
 - DRY forms with [django-crispy-forms](https://github.com/django-crispy-forms/django-crispy-forms)
@@ -41,3 +42,13 @@ dev admin: super1 / 123
 - run migrate
 - run createsuperuser
 - run server
+
+## aws lambda config with zappa
+
+https://www.section.io/engineering-education/deploying-a-serverless-django-restapi-with-zappa-on-aws/
+
+zappa init
+
+zappa update dev
+
+zappa manage dev "collectstatic --noinput"

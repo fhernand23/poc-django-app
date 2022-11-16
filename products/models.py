@@ -30,7 +30,7 @@ class Product(models.Model):
 
     def get_api_url(self):
         """Returns the url to access a particular instance."""
-        return reverse('product-detail', args=[str(self.id)])
+        return reverse('product-api-detail', args=[str(self.id)])
 
     @property
     def sale_price(self):
@@ -59,6 +59,11 @@ class Provider(models.Model):
     def get_absolute_url(self):
         return reverse('provider-detail', args=[str(self.id)])
 
+    def get_api_url(self):
+        """Returns the url to access a particular instance."""
+        return reverse('provider-api-detail', args=[str(self.id)])
+
+
 class WhLocation(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField(null=True, blank=True)
@@ -70,6 +75,10 @@ class WhLocation(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a particular instance."""
         return reverse('whlocation-detail', args=[str(self.id)])
+
+    def get_api_url(self):
+        """Returns the url to access a particular instance."""
+        return reverse('whlocation-api-detail', args=[str(self.id)])
 
 
 class Client(models.Model):
@@ -90,6 +99,10 @@ class Client(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a particular instance."""
         return reverse('client-detail', args=[str(self.id)])
+
+    def get_api_url(self):
+        """Returns the url to access a particular instance."""
+        return reverse('client-api-detail', args=[str(self.id)])
 
 
 class ProductMoveType(models.Model):
@@ -165,6 +178,10 @@ class ProductMove(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
+        """Returns the url to access a particular instance."""
+        return reverse('productmove-detail', args=[str(self.id)])
+
+    def get_api_url(self):
         """Returns the url to access a particular instance."""
         return reverse('productmove-detail', args=[str(self.id)])
 
